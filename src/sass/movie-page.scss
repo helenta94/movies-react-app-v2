@@ -1,0 +1,111 @@
+@import "variables";
+
+.page.movie-page {
+  position:relative;
+
+  padding-top: 0;
+
+  .movie-page-background {
+    position: absolute;
+    top: 0; right: 0;
+    bottom: 0; left: 0;
+
+    background-size: cover;
+
+    height: 600px;
+    z-index: -10;
+
+    .shadow {
+      position: absolute;
+      top: 0; right: 0;
+      bottom: 0; left: 0;
+      height: 600px;
+
+      background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6), rgba(16,17,20,0.9), $background-color);
+
+      z-index: 100;
+    }
+  }
+}
+
+.movie-page .movie-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  padding-top: 150px;
+  padding-bottom: 20px;
+
+  .col-one {
+    min-width: 320px;
+
+    .poster {
+      width: 100%;
+    }
+  }
+
+  .col-two {
+    width: 990px;
+  }
+
+  .headline {
+    //margin-top: -5px;
+    font-size: 32px;
+    //font-weight: bold;
+  }
+
+  .genres {
+    text-transform: uppercase;
+    margin-top: 5px;
+
+    .genres-item {
+      margin-right: 10px;
+      color: $primary-color;
+      font-weight: bold;
+      font-size: 14px;
+    }
+  }
+
+  .text {
+    color: $text-color;
+    margin-top: 5px;
+  }
+
+  .info-item {
+    display: flex;
+    margin-top: 5px;
+
+    .name {
+      display: block;
+      color: $text-color;
+      margin-right: 10px;
+    }
+
+    .value {
+      font-weight: 300;
+      color: rgba(255,255,255,0.7);
+
+      .more-actors {
+        display: inline-block;
+        margin-left: 10px;
+        //font-size: 14px;
+        cursor: pointer;
+        color: $primary-color;
+      }
+    }
+
+  }
+
+  //.info-item.actors {
+  //  display: block;
+  //
+  //  .actor-item {
+  //    width: 50px !important;
+  //
+  //    img {
+  //      width: 100%;
+  //    }
+  //  }
+  //}
+}
+

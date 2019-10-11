@@ -1,0 +1,61 @@
+@import "colors";
+
+.sorting {
+  display: flex;
+  justify-content: flex-start;
+
+  .dropdown-view {
+    position: relative;
+
+    height: 40px;
+    line-height: 40px;
+    margin-right: 30px;
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 2px;
+    color: rgba(255,255,255,0.8);
+    padding: 0 15px;
+
+    transition: 320ms;
+
+    .item-name {
+      display: flex;
+      justify-content: space-between;
+      align-content: center;
+
+      transition: 320ms;
+
+      .fa-chevron-right {
+        line-height: 40px;
+        font-size: 14px;
+        transition: 320ms;
+      }
+
+      &:hover {
+        color: $primary-color;
+      }
+    }
+
+    .dropdown {
+      display: none;
+
+      position: absolute;
+      left: 0;
+      top: 100%;
+
+      width: 100%;
+
+      .item-dropdown {
+        line-height: 34px;
+      }
+
+      &.open {
+        display: block;
+      }
+    }
+
+    &.open .fa-chevron-right {
+      transform: rotate(90deg);
+    }
+  }
+}
+

@@ -1,0 +1,152 @@
+@import "variables";
+
+.my-header {
+  color: rgba(255,255,255,0.8);
+
+  height: 60px;
+  background-color: $primary-color;
+
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 30px;
+    height: 100%;
+  }
+
+  .right-block {
+    display: flex;
+    justify-content: flex-start;
+  }
+}
+
+.logo {
+  color: white;
+  font-weight: bold;
+  line-height:  30px;
+  margin-right: 60px;
+  font-size: 20px;
+
+  .fa-film {
+    margin-right: 10px;
+    font-size: 18px;
+  }
+}
+
+.choice-category {
+  display: flex;
+  align-content: center;
+
+  margin-left: 30px;
+
+  .item {
+    position: relative;
+
+    font-size: 18px;
+    line-height: 30px;
+    margin-right: 20px;
+    transition: 320ms;
+
+    &:hover {
+      color: white;
+    }
+
+    &:before {
+      position: absolute;
+      bottom: 3px;
+
+      content: "";
+      width: 100%;
+      height: 1px;
+      background-color: white;
+      opacity: 0;
+    }
+
+    &.active {
+      color: white;
+
+      &:before {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.user {
+  width: 140px;
+  height: 100%;
+  text-align: center;
+
+  .user-name {
+    display: inline-block;
+    line-height: 40px;
+    margin-right: 15px;
+  }
+
+  .user-photo {
+    display: inline-block;
+
+    background-color: #ebebeb;
+    width: 44px;
+    height: 44px;
+    margin: 0 auto;
+    border-radius: 100%;
+
+    .fa-user {
+      text-align: center;
+      line-height: 40px;
+      font-size: 22px;
+      color: #6c6c6c;
+    }
+  }
+}
+
+.search {
+  position: relative;
+
+  width: 240px;
+  height: 32px;
+  margin-left: 30px;
+  border-radius: 2px;
+  background-color: rgba(255,255,255,0.2);
+  transition: 320ms;
+
+  .fa-search {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .field-search {
+    height: 100%;
+    padding-left: 14px;
+    line-height: 28px;
+    color: rgba(255,255,255,0.9);
+    cursor: pointer;
+    transition: 320ms;
+
+    &::placeholder {
+      font-size: 14px;
+      line-height: 36px;
+
+      color: rgba(255,255,255,0.7);
+    }
+
+    &:hover {
+      // box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+  }
+
+  &:hover {
+    background-color: rgba(255,255,255,0.3);
+  }
+}
+
+.genre {
+  width: 180px;
+
+}
