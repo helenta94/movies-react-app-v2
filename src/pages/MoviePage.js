@@ -2,6 +2,7 @@ import React from "react";
 import Slider from "react-slick";
 import {Link} from "react-router-dom";
 import MoviesSlider from "../components/MoviesSlider";
+import Loader from "../components/Loader";
 
 export default class MoviePage extends React.Component {
   constructor(props) {
@@ -98,7 +99,9 @@ export default class MoviePage extends React.Component {
 
   render() {
     if (this.state.isLoading) {
-      return <div>loading...</div>;
+      return <div className="movie-page-loader">
+        <Loader size="64px" />
+      </div>;
     }
 
     const settings = {
@@ -125,7 +128,9 @@ export default class MoviePage extends React.Component {
             <img className={"poster"} src={"https://image.tmdb.org/t/p/w200"+this.state.movieInfo.poster_path} alt={"movie poster"}/>
           </div>
           <div className={"col col-two"}>
-            <div className={"headline"}>{this.state.movieInfo.title}</div>
+            <div className={"headline"}>{this.state.movieInfo.title}
+              <span className={"type movie"}>Movie</span>
+            </div>
             <div className={"genres"}>
               {this.state.movieInfo.genres.map(item => {
                 return <a href={"#"} className={"genres-item"} key={item.id} children={item.name} />
@@ -168,7 +173,7 @@ export default class MoviePage extends React.Component {
       {this.state.recommendationMovies.length > 0
         ? <section className={"movies-slider"}>
             <div className={"container"}>
-              <MoviesSlider moviesList={this.state.recommendationMovies} name={"Recommendation movies:"}/>
+              <MoviesSlider moviesList={this.state.recommendationMovies} name={"Recommendation movies:"} isShow={false}/>
             </div>
           </section>
         : null

@@ -1,0 +1,30 @@
+@import "variables";
+
+$loader-dark-color: $footer-background;
+$loader-light-color: $primary-color;
+$loader-size: 60px;
+
+.loader {
+  width: $loader-size;
+  height: $loader-size;
+
+  border-radius: 100%;
+  border: 5px solid $loader-dark-color;
+  border-top-color: $loader-light-color;
+
+  animation: loader-animation 800ms infinite linear;
+}
+
+@keyframes loader-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(180deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

@@ -43,13 +43,13 @@ export default class MoviesSlider extends React.Component {
       <div className={"list"}>
         <Slider {...settings} ref={this.slickRef} >
           {this.props.moviesList.map(item => {
-            return <MovieItem item={item} key={item.id} />
+            return <MovieItem item={item} key={item.id} type={this.props.type} />
           })}
-          <div className={"item-all-movies"}>
+          {this.props.isShow ? <div className={"item-all-movies"}>
             <span className={"name"} children={"show all"}/>
             <i className="fas fa-long-arrow-alt-right"/>
             <a className={"all-movies"}/>
-          </div>
+          </div> : null}
         </Slider>
       </div>
     </div>

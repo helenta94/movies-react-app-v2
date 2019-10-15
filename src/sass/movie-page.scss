@@ -1,5 +1,12 @@
 @import "variables";
 
+.movie-page-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
 .page.movie-page {
   position:relative;
 
@@ -52,6 +59,30 @@
     //margin-top: -5px;
     font-size: 32px;
     //font-weight: bold;
+
+    .type {
+      position: relative;
+      top: -5px;
+      display: inline-block;
+
+      margin-left: 15px;
+      font-size: 12px;
+      letter-spacing: 0.7px;
+      font-weight: bold;
+      line-height: 24px;
+      padding: 0 10px;
+      height: 22px;
+      border-radius: 2px;
+      text-transform: uppercase;
+
+      &.movie {
+        background-color: $color-purple;
+      }
+
+      &.tv {
+        background-color: $color-red;
+      }
+    }
   }
 
   .genres {
@@ -60,6 +91,7 @@
 
     .genres-item {
       margin-right: 10px;
+      letter-spacing: 0.1px;
       color: $primary-color;
       font-weight: bold;
       font-size: 14px;

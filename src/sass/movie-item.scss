@@ -2,24 +2,44 @@
 
 .movie-item {
   position: relative;
+  perspective: 300px;
+  padding-top: 15px;
 
   .poster {
+    position: relative;
+
     width: 200px;
     height: 300px;
     margin: auto;
     overflow: hidden;
+    border-radius: 2px;
+    transform: none;
+    transition: 320ms;
 
-    .movie-poster {
+    img {
       width: 100%;
       height: 100%;
 
       transition: 320ms;
     }
+
+    &:after {
+      position: absolute;
+      top: -306px; left: 0;
+
+      content: "";
+      width: 300px;
+      height: 300px;
+      background: rgba(255,255,255,0.15);
+      box-shadow: 27px 24px 22px 12px rgba(255, 255, 255, 0.15);
+      transform: rotate(30deg);
+      transition: 500ms;
+    }
   }
 
   .info {
     font-weight: 300;
-    margin: 15px 0 0 15px;
+    margin: 25px 0 0 15px;
 
     .name {
       display: inline-block;
@@ -28,6 +48,7 @@
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+      line-height: 14px;
 
       transition: 320ms;
     }
@@ -44,15 +65,22 @@
     cursor: pointer;
     color: $primary-color;
 
-    .movie-poster {
-      cursor: pointer;
-      opacity: 0.7;
-      transform: scale(1.05);
-    }
+    .poster {
+      box-shadow: 0 0 10px 0 rgba(0,0,0,0.7);
+      transform: rotateX(4deg) scale(1.1);
 
-    //.genres {
-    //  color: $primary-color;
-    //}
+      img {
+        cursor: pointer;
+        //transform: scale(1.05);
+      }
+
+      &:after {
+        top: -200px;
+
+        background: rgba(255,255,255,0.25);
+        box-shadow: 27px 24px 22px 12px rgba(255, 255, 255, 0.25);
+      }
+    }
   }
 
   a {

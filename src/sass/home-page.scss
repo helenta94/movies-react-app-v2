@@ -1,9 +1,15 @@
 @import "variables";
 
+
+.home-page-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
 .home-page {
   padding-top: 0;
-
-
 }
 
 .upcoming-movies-slider {

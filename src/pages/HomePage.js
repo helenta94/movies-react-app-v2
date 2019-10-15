@@ -2,7 +2,8 @@ import React from "react";
 import Slider from "react-slick";
 import MoviesSlider from "../components/MoviesSlider";
 import {NavLink} from "react-router-dom";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Loader from "../components/Loader";
 
 export default class HomePage extends React.Component {
   constructor(props) {
@@ -12,6 +13,7 @@ export default class HomePage extends React.Component {
       upcomingMovies: [],
       popularMovies: [],
       popularTv: [],
+      isLoading: true,
 
     };
 
@@ -19,41 +21,22 @@ export default class HomePage extends React.Component {
     this.slickRef = React.createRef();
     this.apiKey = "api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d";
 
-    this.getUpcomingMovies();
-    this.getPopularMovies();
-    this.getPopularTv();
+    this.fetchData();
   }
 
-  getPopularMovies() {
-    fetch("https://api.themoviedb.org/3/movie/popular?"+this.apiKey+"&language=en-US&page=1")
-      .then(response => response.json())
+  fetchData() {
+    Promise.all([
+      fetch("https://api.themoviedb.org/3/movie/popular?"+this.apiKey+"&language=en-US&page=1"),
+      fetch("https://api.themoviedb.org/3/movie/upcoming?api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d&language=en-US&page=1"),
+      fetch("https://api.themoviedb.org/3/tv/popular?"+this.apiKey+"&language=en-US&page=1"),
+    ]).then(response => Promise.all(response.map(res => res.json())))
       .then(response => this.setState({
-        popularMovies: response.results
+        popularMovies: response[0].results,
+        upcomingMovies: response[1].results,
+        popularTv: response[2].results,
+        isLoading: false
       }))
-      .then(response => console.log(this.state.popularMovies))
-  }
-
-  getUpcomingMovies() {
-    fetch("https://api.themoviedb.org/3/movie/upcoming?api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d&language=en-US&page=1")
-      .then(response => response.json())
-      .then(response => response.results.sort((a, b) => {
-        if (a > b) return 1;
-        if (a == b) return 0;
-        if (a < b) return -1;
-      }))
-      .then(response => this.setState({
-        upcomingMovies: response,
-      }))
-      .then(response => console.log(this.state.upcomingMovies))
-  }
-
-  getPopularTv() {
-    fetch("https://api.themoviedb.org/3/tv/popular?"+this.apiKey+"&language=en-US&page=1")
-      .then(response => response.json())
-      .then(response => this.setState({
-        popularTv: response.results
-      }))
-      .then(response => console.log(this.state.popularTv))
+      .then(response => console.log(this.state.popularMovies,this.state.popularTv))
   }
 
   formatReleaseDate(date) {
@@ -79,6 +62,12 @@ export default class HomePage extends React.Component {
         }
       }]
     };
+
+    if (this.state.isLoading) {
+      return <div className={"home-page-loader"}>
+        <Loader/>
+      </div>
+    }
 
     return <div className={"page home-page"}>
       <div className={""}>
@@ -114,12 +103,12 @@ export default class HomePage extends React.Component {
         </section>
         <section className={"movies-slider"}>
           <div className={"container"}>
-            <MoviesSlider moviesList={this.state.popularMovies} name={"Popular movies:"}/>
+            <MoviesSlider moviesList={this.state.popularMovies} name={"Popular movies:"} isShow={true} type={"movie"}/>
           </div>
         </section>
         <section className={"movies-slider"}>
           <div className={"container"}>
-            <MoviesSlider moviesList={this.state.popularTv} name={"Popular TV:"}/>
+            <MoviesSlider moviesList={this.state.popularTv} name={"Popular TV:"} isShow={true} type={"tv"}/>
           </div>
         </section>
       </div>
