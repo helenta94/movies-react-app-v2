@@ -40,7 +40,7 @@ export default class HomePage extends React.Component {
   }
 
   formatReleaseDate(date) {
-    return this.months[new Date(date).getMonth()]+" "+new Date(date).getDay();
+    return this.months[new Date(date).getMonth()]+" "+new Date(date).getDate();
   }
 
   render() {
@@ -55,6 +55,7 @@ export default class HomePage extends React.Component {
       arrows: false,
       centerMode: true,
       centerPadding: "14%",
+      initialSlide: 6,
       responsive: [{
         breakpoint: 600,
         settings: {

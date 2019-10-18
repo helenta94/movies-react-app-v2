@@ -60,7 +60,7 @@ export default class MoviePage extends React.Component {
   }
 
   formatReleaseDate(date) {
-    return this.months[new Date(date).getMonth()]+" "+new Date(date).getDay()+", "+new Date(date).getFullYear();
+    return this.months[new Date(date).getMonth()]+" "+new Date(date).getDate()+", "+new Date(date).getFullYear();
   }
 
   runtimeToHumanTime(mints) {
@@ -166,14 +166,14 @@ export default class MoviePage extends React.Component {
       {this.state.similarMovies.length > 0
         ? <section className={"movies-slider"}>
           <div className={"container"}>
-              <MoviesSlider moviesList={this.state.similarMovies} name={"Similar movies:"}/>
+              <MoviesSlider moviesList={this.state.similarMovies} name={"Similar movies:"} isShow={false} type={"movie"}/>
             </div>
           </section>
         : null}
       {this.state.recommendationMovies.length > 0
         ? <section className={"movies-slider"}>
             <div className={"container"}>
-              <MoviesSlider moviesList={this.state.recommendationMovies} name={"Recommendation movies:"} isShow={false}/>
+              <MoviesSlider moviesList={this.state.recommendationMovies} name={"Recommendation movies:"} isShow={false} type={"movie"}/>
             </div>
           </section>
         : null

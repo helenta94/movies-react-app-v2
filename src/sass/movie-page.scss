@@ -53,6 +53,12 @@
 
   .col-two {
     width: 990px;
+
+    .col {
+      display: inline-block;
+      vertical-align: top;
+      width: 50%;
+    }
   }
 
   .headline {
