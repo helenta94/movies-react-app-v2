@@ -10,6 +10,7 @@ export default class TvShowPage extends React.Component {
       tvInfo: null,
       isLoading: true,
       expandedCredits: false,
+      seasons: [],
 
     };
 
@@ -27,6 +28,23 @@ export default class TvShowPage extends React.Component {
         isLoading: false
       }))
       .then(response => console.log(this.state.tvInfo))
+      .then(response => this.fetchSeason(1))
+  }
+
+  fetchSeason(seasonNumber){
+    fetch("https://api.themoviedb.org/3/tv/"+ this.props.match.params.id
+      +"/season/"+seasonNumber+"?api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d&language=en-US")
+      .then(response => response.json())
+      .then(response => this.setState({
+        seasons: this.state.seasons.concat(response),
+      }))
+      .then(response => {
+        if (seasonNumber < this.state.tvInfo.number_of_seasons) {
+          this.fetchSeason(++seasonNumber);
+        }
+      })
+
+    //console.log(this.state.tvInfo.seasons[0].season_number)
   }
 
   formatReleaseDate(date) {
@@ -140,6 +158,24 @@ export default class TvShowPage extends React.Component {
               </div>
             </div>
           </div>
+        </div>
+        <div className={"seasons"}>
+          {this.state.tvInfo.seasons.map((item, index) => {
+            //console.log(item);
+            {if (item.season_number > 0) {
+              return <div className={"season"} key={item.id}>
+                <div className={"col col-one"}>
+                  <span>{item.name}</span>
+                  <div className={"poster"}>
+                    <img src={"https://image.tmdb.org/t/p/w200" + item.poster_path} />
+                  </div>
+                </div>
+                <div className={"episodes"}>
+                  {console.log(this.state.seasons[item])}
+                </div>
+              </div>
+            }}
+          })}
         </div>
       </div>
     </div>
