@@ -160,18 +160,27 @@ export default class TvShowPage extends React.Component {
           </div>
         </div>
         <div className={"seasons"}>
-          {this.state.tvInfo.seasons.map((item, index) => {
+          {/*{console.log(this.state.tvInfo.seasons)}*/}
+          {this.state.seasons.map((item, index) => {
             //console.log(item);
             {if (item.season_number > 0) {
               return <div className={"season"} key={item.id}>
-                <div className={"col col-one"}>
-                  <span>{item.name}</span>
+                <div className={"season-name"}>
+                  <span className={"name"}>{item.name}</span>
                   <div className={"poster"}>
                     <img src={"https://image.tmdb.org/t/p/w200" + item.poster_path} />
                   </div>
                 </div>
                 <div className={"episodes"}>
-                  {console.log(this.state.seasons[item])}
+                  <table className={"episode"}>
+                    {this.state.seasons[index].episodes.map(item => {
+                      return <tr>
+                          <td>{item.season_number + "x" + item.episode_number}</td>
+                          <td>{" " + item.name}</td>
+                          <td>{" " + this.formatReleaseDate(item.air_date)}</td>
+                        </tr>
+                    })}
+                  </table>
                 </div>
               </div>
             }}
