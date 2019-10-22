@@ -1,4 +1,4 @@
-@import "colors";
+@import "variables";
 
 .sorting {
   display: flex;
@@ -7,6 +7,7 @@
   .dropdown-view {
     position: relative;
 
+    width: 180px;
     height: 40px;
     line-height: 40px;
     margin-right: 30px;
@@ -46,6 +47,44 @@
 
       .item-dropdown {
         line-height: 34px;
+        padding-left: 15px;
+        transition: 320ms;
+
+        .square {
+          display: inline-block;
+          position: relative;
+          top: 1px;
+
+          margin-right: 10px;
+          width: 14px;
+          height: 14px;
+          border: 1px solid white;
+          border-radius: 2px;
+          transition: 320ms;
+
+          .fa-check {
+            position: absolute;
+            top: 1px; left: 2px;
+            font-size: 9px;
+
+            opacity: 0;
+          }
+
+
+        }
+
+        &:hover {
+          color: $primary-color;
+          cursor: pointer;
+
+          .square {
+            border-color: $primary-color;
+          }
+        }
+
+        &.checked>.square>.fa-check {
+          opacity: 1;
+        }
       }
 
       &.open {

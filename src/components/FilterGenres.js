@@ -7,12 +7,10 @@ export default class FilterGenres extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.selectedMovie = [];
 		console.log(this.props.genres)
 	}
 
 	handlerItemClick(id) {
-		console.log(id);
 		this.props.genres(id);
 
 	}

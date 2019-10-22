@@ -15,7 +15,6 @@ export default class Dropdown extends React.Component {
   }
 
   handlerItemClick(e, id) {
-    console.log(id);
     this.props.handlerClick(id);
   }
 
@@ -38,7 +37,7 @@ export default class Dropdown extends React.Component {
   }
 
   render() {
-    return <div className={this.state.dropdownIsOpen ? "dropdown-view genre open" : "dropdown-view genre"}
+    return <div className={this.state.dropdownIsOpen ? "dropdown-view open" : "dropdown-view"}
                 ref={this.dropdownItemRef}>
       <div className={"item-name"} onClick={() => this.handlerClickDropdown()}>
         <span className={"name-text"}>{"Genres"}</span>
@@ -47,16 +46,13 @@ export default class Dropdown extends React.Component {
       <div className={this.state.dropdownIsOpen ? "dropdown open" : "dropdown"}>
         {this.props.list
           ? this.props.list.map(item => {
-              return <div className={"item-dropdown"}
+              return <div className={this.state.itemIsChecked ? "item-dropdown checked" : "item-dropdown"}
                           onClick={(e) => this.handlerItemClick(e, item.id)}
                           key={item.id}>
-                <label className={"label-checkbox"}>
-                  <input type={"checkbox"} className={"field-checkbox"}/>
-                  <span className={"custom-checkbox"}>
-                    <i className="fas fa-check"/>
-                  </span>
-                  <span className={"text"}>{item.name}</span>
-                </label>
+                <span className={"square"}>
+                  <i className="fas fa-check"/>
+                </span>
+                <span className={"name"}>{item.name}</span>
               </div>
         }) : null}
       </div>

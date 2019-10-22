@@ -11,7 +11,8 @@ export default class MoviesPage extends React.Component {
 		this.state = {
 			popularMovies: [],
 			selectedGenres: [],
-
+			selectedMovie: [],
+			resultsMovies: []
 		};
 
 		this.fetchData();
@@ -28,19 +29,25 @@ export default class MoviesPage extends React.Component {
 	}
 
 	genresData(id) {
-		
+		this.setState({
+			selectedMovie: this.state.selectedMovie.concat(id)
+		});
+
 		fetch("https://api.themoviedb.org/3/discover/movie?api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d"
 			+"&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1"
-			+"&with_genres="+ id)
+			+"&with_genres="+ this.state.selectedMovie.map(item=>item).join(","))
 			.then(res => res.json())
-			.then(res => console.log(res))
+			.then(res => this.setState({
+				resultsMovies: res.results
+			})).then(() => console.log(this.state.resultsMovies));
 		//with_genres
+		console.log(this.state.selectedMovie)
 	}
 
 	render() {
 		return <div className={"page"}>
 			<div className={"container"}>
-				<FilterGenres genres={this.genresData} />
+				<FilterGenres genres={this.genresData.bind(this)} />
 			</div>
 		</div>
 	}
