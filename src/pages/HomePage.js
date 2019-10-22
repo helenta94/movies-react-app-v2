@@ -104,7 +104,10 @@ export default class HomePage extends React.Component {
         </section>
         <section className={"movies-slider"}>
           <div className={"container"}>
-            <MoviesSlider moviesList={this.state.popularMovies} name={"Popular movies:"} isShow={true} type={"movie"}/>
+            <MoviesSlider moviesList={this.state.popularMovies}
+                          name={"Popular movies:"}
+                          isShow={true}
+                          type={"movie"}/>
           </div>
         </section>
         <section className={"movies-slider"}>

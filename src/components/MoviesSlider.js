@@ -19,7 +19,7 @@ export default class MoviesSlider extends React.Component {
   }
 
   render() {
-    const settings = {
+    const settings = this.props.set || {
       dots: false,
       arrows: false,
       infinite: false,

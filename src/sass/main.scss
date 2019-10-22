@@ -3,7 +3,7 @@
 
 @import "colors";
 @import "header";
-@import "sorting";
+@import "filter";
 @import "home-page";
 @import "variables";
 @import "movies-list";
@@ -89,7 +89,7 @@ button {
   padding-left: 15px;
 
   .field-checkbox {
-    display: none;
+    //display: none;
 
     &:checked + span > i {
       opacity: 1;

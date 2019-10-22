@@ -1,5 +1,6 @@
 import React from "react";
 import Loader from "../components/Loader";
+import MoviesSlider from "../components/MoviesSlider";
 
 export default class TvShowPage extends React.Component {
 
@@ -11,6 +12,8 @@ export default class TvShowPage extends React.Component {
       isLoading: true,
       expandedCredits: false,
       seasons: [],
+      similarTv: [],
+      recommendationsTv: [],
 
     };
 
@@ -19,16 +22,31 @@ export default class TvShowPage extends React.Component {
     this.fetchData();
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.match.params.id !== prevProps.match.params.id) {
+      this.fetchData();
+
+    }
+  }
+
   fetchData() {
+    this.setState({
+      isLoading: true,
+      seasons: [],
+    });
     Promise.all([
-      fetch("https://api.themoviedb.org/3/tv/"+ this.props.match.params.id +"?api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d&append_to_response=credits&language=en-US")
+      fetch("https://api.themoviedb.org/3/tv/"+ this.props.match.params.id +"?api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d&append_to_response=credits&language=en-US"),
+      fetch("https://api.themoviedb.org/3/tv/"+ this.props.match.params.id +"/similar?api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d&language=en-US&page=1"),
+      fetch("https://api.themoviedb.org/3/tv/"+ this.props.match.params.id +"/recommendations?api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d&language=en-US&page=1"),
     ]).then(response => Promise.all(response.map(res => res.json())))
       .then(response => this.setState({
         tvInfo: response[0],
+        similarTv: response[1].results,
+        recommendationsTv: response[2].results,
         isLoading: false
       }))
-      .then(response => console.log(this.state.tvInfo))
-      .then(response => this.fetchSeason(1))
+      .then(() => console.log(this.state.similarTv))
+      .then(() => this.fetchSeason(1))
   }
 
   fetchSeason(seasonNumber){
@@ -173,19 +191,29 @@ export default class TvShowPage extends React.Component {
                 </div>
                 <div className={"episodes"}>
                   <table className={"episode"}>
-                    {this.state.seasons[index].episodes.map(item => {
-                      return <tr>
-                          <td>{item.season_number + "x" + item.episode_number}</td>
-                          <td>{" " + item.name}</td>
-                          <td>{" " + this.formatReleaseDate(item.air_date)}</td>
-                        </tr>
-                    })}
+                    <tbody>
+                      {this.state.seasons[index].episodes.map(item => {
+                        return <tr key={item.id}>
+                            <td>{item.season_number + "x" + item.episode_number}</td>
+                            <td>{" " + item.name}</td>
+                            <td>{" " + this.formatReleaseDate(item.air_date)}</td>
+                          </tr>
+                      })}
+                    </tbody>
                   </table>
                 </div>
               </div>
             }}
           })}
         </div>
+        <MoviesSlider moviesList={this.state.similarTv}
+                      name={"Similar TV"}
+                      isShow={false}
+                      type={"tv"}/>
+        <MoviesSlider moviesList={this.state.recommendationsTv}
+                      name={"Recomendations TV"}
+                      isShow={false}
+                      type={"tv"}/>
       </div>
     </div>
   }

@@ -166,14 +166,20 @@ export default class MoviePage extends React.Component {
       {this.state.similarMovies.length > 0
         ? <section className={"movies-slider"}>
           <div className={"container"}>
-              <MoviesSlider moviesList={this.state.similarMovies} name={"Similar movies:"} isShow={false} type={"movie"}/>
+              <MoviesSlider moviesList={this.state.similarMovies}
+                            name={"Similar movies:"}
+                            isShow={false}
+                            type={"movie"}/>
             </div>
           </section>
         : null}
       {this.state.recommendationMovies.length > 0
         ? <section className={"movies-slider"}>
             <div className={"container"}>
-              <MoviesSlider moviesList={this.state.recommendationMovies} name={"Recommendation movies:"} isShow={false} type={"movie"}/>
+              <MoviesSlider moviesList={this.state.recommendationMovies}
+                            name={"Recommendation movies:"}
+                            isShow={false}
+                            type={"movie"}/>
             </div>
           </section>
         : null
