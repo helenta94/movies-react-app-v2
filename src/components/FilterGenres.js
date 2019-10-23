@@ -6,18 +6,19 @@ export default class FilterGenres extends React.Component {
 
 	constructor(props) {
 		super(props);
-
-		console.log(this.props.genres)
 	}
 
 	handlerItemClick(id) {
-		this.props.genres(id);
-
+		this.props.changeHandler(id);
 	}
 
 	render() {
-		return <div className={"sorting"}>
-			<Dropdown list={genresMovie} selectedMovie={this.selectedMovie} handlerClick={(id) => this.handlerItemClick(id)} />
+		return <div className={"filter"}>
+			<Dropdown list={genresMovie}
+								selected={this.props.selected}
+								dropdownName={"Genres"}
+                handlerClick={(id) => this.handlerItemClick(id)}
+								multiple={true} />
 		</div>
 	}
 }
