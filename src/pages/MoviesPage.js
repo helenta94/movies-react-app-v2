@@ -23,7 +23,8 @@ export default class MoviesPage extends React.Component {
 	fetchData() {
 		let genresStr = "";
 		if (this.state.selectedGenres.length > 0) {
-			genresStr = "&with_genres=" + this.state.selectedGenres.join(",");
+			genresStr = "&with_genres="
+				+ this.state.selectedGenres.join(",");
 		}
 
 		let sortByStr = "&sort_by=" + this.state.selectedSortBy[0];
@@ -74,6 +75,7 @@ export default class MoviesPage extends React.Component {
 					<FilterSortBy changeHandler={this.handleSortChanged.bind(this)}
 												selected={this.state.selectedSortBy}/>
 				</div>
+				<h1 className={"headline"}>Movies according to your request</h1>
 				<div className={"results"}>
 					{this.state.resultsMovies.map(item => {
 						return <div className={"result"}>

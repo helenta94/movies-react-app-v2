@@ -35,20 +35,19 @@ export default class Dropdown extends React.Component {
     document.body.addEventListener("click", this.handlerClickBody.bind(this))
   }
 
-  getItemClassNames(item) {
-    const index = this.props.selected.findIndex(el => el === item);
-    if (index >= 0) {
+  getItemClassNames(id) {
+    if (this.props.selected.includes(id)) {
       return "item-dropdown selected"
     } else {
       return "item-dropdown"
     }
   }
 
-  getItemCount() {
+  getLabel() {
     if (this.props.selected.length < 1) {
       return this.props.dropdownName;
     } else if (this.props.selected.length === 1) {
-      return getGenreNameById(this.props.selected[0]);
+      return this.props.list.find(el => el.id === this.props.selected[0]).name;
     } else {
       return "Selected(" + this.props.selected.length + ")";
     }
@@ -58,7 +57,7 @@ export default class Dropdown extends React.Component {
     return <div className={this.state.dropdownIsOpen ? "dropdown-view open" : "dropdown-view"}
                 ref={this.dropdownItemRef}>
       <div className={"item-name"} onClick={() => this.handlerClickDropdown()}>
-        <span className={"name-text"}>{this.getItemCount()}</span>
+        <span className={"name-text"}>{this.getLabel()}</span>
         <i className="fas fa-chevron-right" />
       </div>
       <div className={this.state.dropdownIsOpen ? "dropdown open" : "dropdown"}>

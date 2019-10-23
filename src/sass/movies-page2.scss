@@ -1,12 +1,22 @@
 @import "variables";
 
+.movies-page .filters {
+  display: flex;
+  justify-content: space-between;
+
+  padding-top: 10px;
+}
+
+.movies-page .headline {
+  margin-top: 50px;
+}
+
 .movies-page .results {
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
 
   margin: 0 -10px 0 -14px;
-  padding: 30px 0;
 
   .result {
     max-width: 220px !important;
