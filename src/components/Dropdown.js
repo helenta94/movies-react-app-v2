@@ -1,6 +1,4 @@
 import React from "react";
-import MovieItem from "./MovieItem";
-import {getGenreNameById} from "../genresMovie"
 
 export default class Dropdown extends React.Component {
   constructor(props) {
