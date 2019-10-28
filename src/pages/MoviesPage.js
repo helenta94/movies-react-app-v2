@@ -6,6 +6,7 @@ import FilterYears from "../components/FilterYears";
 import MovieItem from "../components/MovieItem";
 import moment from "moment";
 import FilterCountry from "../components/FilterCountry";
+import Loader from "../components/Loader";
 
 export default class MoviesPage extends React.Component {
 	constructor(props) {
@@ -18,16 +19,17 @@ export default class MoviesPage extends React.Component {
 			resultsMovies: [],
 			selectedYears: [-1],
 			selectedCountry: [],
-			page: 1,
+			currentPage: 1,
 			pageChanged: false,
-
+			isLoading: true,
+			totalPages: 1,
+			response: [],
 		};
 
 		this.fetchData();
 	}
 
 	fetchData() {
-		console.log(8);
 		let genresStr = "";
 		if (this.state.selectedGenres.length > 0) {
 			genresStr = "&with_genres="
@@ -35,7 +37,7 @@ export default class MoviesPage extends React.Component {
 		}
 
 		let sortByStr = "&sort_by=" + this.state.selectedSortBy[0];
-		let pageCount = "&page=" + this.state.page;
+		let pageCount = "&page=" + this.state.currentPage;
 
 		//let country = "&certification_country=" + this.state.selectedCountry[0];
 		let results = this.state.resultsMovies;
@@ -47,12 +49,17 @@ export default class MoviesPage extends React.Component {
 			.then(res => {
 				this.state.pageChanged
 					? results = results.concat(res.results)
-					: results = res.results
+					: results = res.results;
+				this.setState({
+					resultsMovies: results,
+					totalPages: res.total_pages,
+					pageChanged: false,
+					isLoading: false,
+					response: res
+				})
 			})
-			.then(() => this.setState({
-				resultsMovies: results,
-				pageChanged: false,
-			}));
+			.then(res => console.log(this.state.response));
+
 	}
 
 	getFilterYear() {
@@ -89,13 +96,15 @@ export default class MoviesPage extends React.Component {
 			const selected = this.state.selectedGenres.slice();
 			selected.splice(index,1);
 			this.setState({
-				selectedGenres: selected
+				selectedGenres: selected,
+				//isLoading: true,
 			}, () => {
 				this.fetchData()
 			})
 		} else {
 			this.setState({
-				selectedGenres: this.state.selectedGenres.concat(id)
+				selectedGenres: this.state.selectedGenres.concat(id),
+				//isLoading: true,
 			}, () => {
 				this.fetchData()
 			});
@@ -104,7 +113,8 @@ export default class MoviesPage extends React.Component {
 
 	handleSortChanged(id) {
 		this.setState({
-			selectedSortBy: [id]
+			selectedSortBy: [id],
+			isLoading: true,
 		}, () => {
 			this.fetchData()
 		});
@@ -112,15 +122,15 @@ export default class MoviesPage extends React.Component {
 
 	handleYearsChanged(id) {
 		this.setState({
-			selectedYears: [id]
+			selectedYears: [id],
+			isLoading: true,
 		}, () => this.fetchData());
 	}
 
-	handleMoreMovie() {
+	handleLoadMore() {
 		this.setState({
-			page: this.state.page + 1,
+			currentPage: this.state.currentPage + 1,
 			pageChanged: true,
-
 		}, () => {
 			this.fetchData()})
 
@@ -135,6 +145,12 @@ export default class MoviesPage extends React.Component {
 	// }
 
 	render() {
+		if (this.state.isLoading) {
+			return <div className={"movies-page-loader"}>
+				<Loader/>
+			</div>
+		}
+
 		return <div className={"page movies-page"}>
 			<div className={"container"}>
 				<div className={"filters"}>
@@ -153,10 +169,16 @@ export default class MoviesPage extends React.Component {
 						</div>
 					})}
 				</div>
-				<button className={"btn-more-movies"} onClick={() => this.handleMoreMovie()}>
-					<i className="fas fa-sync-alt"/>
-					<span children={"Load more"}/>
-				</button>
+				{this.state.totalPages > this.state.currentPage
+					? <button className={"btn-more-movies"} onClick={() => this.handleLoadMore()}>
+						<i className="fas fa-sync-alt"/>
+						<span children={"Load more"}/>
+					</button>
+					: null}
+				{this.state.totalPages < this.state.currentPage
+					? <div>Sorry, there are no results for your request</div>
+					: null
+				}
 			</div>
 		</div>
 	}

@@ -1,10 +1,18 @@
 @import "variables";
 
+.movies-page-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
 .movies-page .filters {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
 
   padding-top: 10px;
+
 }
 
 .movies-page .headline {
