@@ -14,6 +14,8 @@ export default class HomePage extends React.Component {
       popularMovies: [],
       popularTv: [],
       isLoading: true,
+      popularKidsMovie: [],
+      popularComedyRomance: [],
 
     };
 
@@ -29,15 +31,21 @@ export default class HomePage extends React.Component {
       fetch("https://api.themoviedb.org/3/movie/popular?"+this.apiKey+"&language=en-US&page=1"),
       fetch("https://api.themoviedb.org/3/movie/upcoming?api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d&language=en-US&page=1"),
       fetch("https://api.themoviedb.org/3/tv/popular?"+this.apiKey+"&language=en-US&page=1"),
+      fetch("https://api.themoviedb.org/3/discover/movie?"+this.apiKey+"&certification_country=US&certification.lte=G&sort_by=popularity.desc"),
+      fetch("https://api.themoviedb.org/3/discover/movie?api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d"
+        +"&language=en-US&sort_by=popularity.desc&with_genres=35,10749&include_adult=false&include_video=false&page=1"),
     ]).then(response => Promise.all(response.map(res => res.json())))
       .then(response => this.setState({
         popularMovies: response[0].results,
         upcomingMovies: response[1].results,
         popularTv: response[2].results,
-        isLoading: false
+        isLoading: false,
+        popularKidsMovie: response[3].results,
+        popularComedyRomance: response[4].results,
       }))
-      .then(response => console.log(this.state.popularMovies,this.state.popularTv))
+      .then(response => console.log(this.state.popularComedyRomance))
   }
+
 
   formatReleaseDate(date) {
     return this.months[new Date(date).getMonth()]+" "+new Date(date).getDate();
@@ -105,14 +113,33 @@ export default class HomePage extends React.Component {
         <section className={"movies-slider"}>
           <div className={"container"}>
             <MoviesSlider moviesList={this.state.popularMovies}
-                          name={"Popular movies:"}
+                          name={"Popular movies"}
                           isShow={true}
                           type={"movie"}/>
           </div>
         </section>
         <section className={"movies-slider"}>
           <div className={"container"}>
-            <MoviesSlider moviesList={this.state.popularTv} name={"Popular TV:"} isShow={true} type={"tv"}/>
+            <MoviesSlider moviesList={this.state.popularKidsMovie}
+                          name={"Popular movies for kids"}
+                          isShow={true}
+                          type={"movie"}/>
+          </div>
+        </section>
+        <section className={"movies-slider"}>
+          <div className={"container"}>
+            <MoviesSlider moviesList={this.state.popularTv}
+                          name={"Popular TV"}
+                          isShow={true}
+                          type={"tv"}/>
+          </div>
+        </section>
+        <section className={"movies-slider"}>
+          <div className={"container"}>
+            <MoviesSlider moviesList={this.state.popularComedyRomance}
+                          name={"Popular comedy romance"}
+                          isShow={true}
+                          type={"movie"}/>
           </div>
         </section>
       </div>

@@ -151,6 +151,31 @@ button {
   }
 }
 
+.btn-more-movies {
+  display: block;
+  margin: 0 auto 40px;
+  transition: 320ms;
+  color: rgba(255,255,255,0.4);
+
+  .fa-sync-alt {
+    font-size: 24px;
+    color: inherit;
+    margin-bottom: 15px;
+  }
+
+  span {
+    display: block;
+  }
+
+  &:hover {
+    color: $primary-color;
+
+    .fa-sync-alt {
+      color: inherit;
+    }
+  }
+}
+
 // ---------------------------------------------------------------------------------------
 
 .footer {

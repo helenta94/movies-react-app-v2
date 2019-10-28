@@ -13,16 +13,12 @@ export default class FilterGenres extends React.Component {
     ]
   }
 
-  handlerItemClick(id) {
-    this.props.changeHandler(id);
-  }
-
   render() {
     return <div className={"filter"}>
       <Dropdown list={this.itemsSortBy}
                 selected={this.props.selected}
                 dropdownName={"Sort by"}
-                handlerClick={(id) => this.handlerItemClick(id)}
+                handlerClick={(id) => this.props.changeHandler(id)}
                 multiple={false}/>
     </div>
   }

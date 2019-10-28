@@ -5,6 +5,7 @@ import FilterSortBy from "../components/FilterSortBy";
 import FilterYears from "../components/FilterYears";
 import MovieItem from "../components/MovieItem";
 import moment from "moment";
+import FilterCountry from "../components/FilterCountry";
 
 export default class MoviesPage extends React.Component {
 	constructor(props) {
@@ -15,13 +16,18 @@ export default class MoviesPage extends React.Component {
 			selectedGenres: [],
 			selectedSortBy: ["popularity.desc"],
 			resultsMovies: [],
-			selectedYears: [-1]
+			selectedYears: [-1],
+			selectedCountry: [],
+			page: 1,
+			pageChanged: false,
+
 		};
 
 		this.fetchData();
 	}
 
 	fetchData() {
+		console.log(8);
 		let genresStr = "";
 		if (this.state.selectedGenres.length > 0) {
 			genresStr = "&with_genres="
@@ -29,13 +35,23 @@ export default class MoviesPage extends React.Component {
 		}
 
 		let sortByStr = "&sort_by=" + this.state.selectedSortBy[0];
+		let pageCount = "&page=" + this.state.page;
+
+		//let country = "&certification_country=" + this.state.selectedCountry[0];
+		let results = this.state.resultsMovies;
 
 		fetch("https://api.themoviedb.org/3/discover/movie?api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d"
-			+"&language=en-US"+ sortByStr + this.getFilterYear() +"&include_adult=false&include_video=false&page=1"
-		  + genresStr)
+			+"&language=en-US" + sortByStr + this.getFilterYear() +"&include_adult=false&include_video=false&page=1"
+		  + genresStr + pageCount)
 			.then(res => res.json())
-			.then(res => this.setState({
-				resultsMovies: res.results
+			.then(res => {
+				this.state.pageChanged
+					? results = results.concat(res.results)
+					: results = res.results
+			})
+			.then(() => this.setState({
+				resultsMovies: results,
+				pageChanged: false,
 			}));
 	}
 
@@ -100,6 +116,24 @@ export default class MoviesPage extends React.Component {
 		}, () => this.fetchData());
 	}
 
+	handleMoreMovie() {
+		this.setState({
+			page: this.state.page + 1,
+			pageChanged: true,
+
+		}, () => {
+			this.fetchData()})
+
+	}
+
+	// componentDidMount() {
+	// 	window.addEventListener('scroll', this.handleMoreMovie.bind(this));
+	// }
+	//
+	// componentWillUnmount() {
+	// 	window.addEventListener('scroll', this.handleMoreMovie.bind(this));
+	// }
+
 	render() {
 		return <div className={"page movies-page"}>
 			<div className={"container"}>
@@ -111,7 +145,7 @@ export default class MoviesPage extends React.Component {
 					<FilterSortBy changeHandler={this.handleSortChanged.bind(this)}
 												selected={this.state.selectedSortBy}/>
 				</div>
-				<h1 className={"headline"}>Movies according to your request</h1>
+				{/*<h1 className={"headline"}>Movies according to your request</h1>*/}
 				<div className={"results"}>
 					{this.state.resultsMovies.map(item => {
 						return <div className={"result"}>
@@ -119,6 +153,10 @@ export default class MoviesPage extends React.Component {
 						</div>
 					})}
 				</div>
+				<button className={"btn-more-movies"} onClick={() => this.handleMoreMovie()}>
+					<i className="fas fa-sync-alt"/>
+					<span children={"Load more"}/>
+				</button>
 			</div>
 		</div>
 	}
