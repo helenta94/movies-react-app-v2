@@ -1,6 +1,8 @@
 import React from "react";
 import Slider from "react-slick";
 import MovieItem from "./MovieItem";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+
 
 export default class MoviesSlider extends React.Component {
 
@@ -48,7 +50,7 @@ export default class MoviesSlider extends React.Component {
           {this.props.isShow ? <div className={"item-all-movies"}>
             <span className={"name"} children={"show all"}/>
             <i className="fas fa-long-arrow-alt-right"/>
-            <a className={"all-movies"}/>
+            <Link to={"/movies"} className={"all-movies"}/>
           </div> : null}
         </Slider>
       </div>

@@ -19,6 +19,8 @@ export default class HomePage extends React.Component {
 
     };
 
+    console.log(window.location.hash);
+
     this.months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     this.slickRef = React.createRef();
     this.apiKey = "api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d";
@@ -45,7 +47,6 @@ export default class HomePage extends React.Component {
       }))
       .then(response => console.log(this.state.popularComedyRomance))
   }
-
 
   formatReleaseDate(date) {
     return this.months[new Date(date).getMonth()]+" "+new Date(date).getDate();

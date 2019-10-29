@@ -1,6 +1,4 @@
 import React from "react";
-import Slider from "react-slick";
-import {Link} from "react-router-dom";
 import MoviesSlider from "../components/MoviesSlider";
 import Loader from "../components/Loader";
 
@@ -20,9 +18,7 @@ export default class MoviePage extends React.Component {
     };
 
     this.id = props.match.params.id;
-
     this.months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-
     this.apiKey = "api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d";
 
     this.fetchData()
@@ -60,7 +56,7 @@ export default class MoviePage extends React.Component {
   }
 
   formatReleaseDate(date) {
-    return this.months[new Date(date).getMonth()]+" "+new Date(date).getDate()+", "+new Date(date).getFullYear();
+    return this.months[new Date(date).getMonth()]+" "+new Date(date).getDate() + ", " +new Date(date).getFullYear();
   }
 
   runtimeToHumanTime(mints) {
