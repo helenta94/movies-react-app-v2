@@ -15,8 +15,8 @@ export default class MoviesPage extends React.Component {
 		this.state = {
 			popularMovies: [],
 			selectedGenres: [],
-			selectedSortBy: [],
-			selectedYears: [],
+			selectedSortBy: ["popularity.desc"],
+			selectedYears: [-1],
 			selectedCountry: [],
 			resultsMovies: [],
 			currentPage: 1,
@@ -24,101 +24,73 @@ export default class MoviesPage extends React.Component {
 			isLoading: true,
 			totalPages: 1,
 			response: [],
-
 		};
 	}
 
 	componentDidMount() {
-		this.setFiltersHash();
+		this.configFilters();
 	}
 
-	setFiltersHash(newHashdata) {
-		console.log(newHashdata)
-		let data= {};
-		let hashdata = window.location.hash;
-		let sortBy, yearLte, yearGte, year, filterGenres, years;
-
-		if (newHashdata !== undefined) {
-			hashdata = window.location.hash = newHashdata;
+	configFilters() {
+		const result = {};
+		const hashObject = {};
+		let hashString = window.location.hash;
+		if (hashString.length > 0 && hashString[0] === "#") {
+			hashString = hashString.substr(1);
 		}
 
-		if (hashdata === "") {
-			hashdata = window.location.hash = "&sort_by=popularity.desc&primary_release_date.gte=1940-01-01&primary_release_date.lte=2020-12-31";
-		}
-		hashdata.split("&").map(item => item.split("=")).forEach(item => data[item[0]] = item[1]);
+		hashString.split("&").forEach((item) => {
+			const kv = item.split("=", 2);
+			if (kv.length === 2) {
+				hashObject[kv[0]] = kv[1];
+			}
+		});
 
-		for (let key in data) {
-			if (key ==="primary_release_date.gte") {
-				yearGte = data[key];
-			}
-			if (key ==="primary_release_date.lte") {
-				yearLte = data[key];
-			}
-			if (key ==="primary_release_year") {
-				year = data[key];
-			}
-			if (key ==="sort_by") {
-				sortBy = data[key];
-			}
-			if (key ==="with_genres") {
-				filterGenres = data[key];
-			}
+		if (hashObject.sortby) {
+			result.selectedSortBy = [hashObject.sortby];
 		}
 
-		years = yearLte !== undefined ? [[yearGte, yearLte]] : [year];
-
-		if (filterGenres !== undefined) {
-			this.setState({
-				selectedSortBy: [sortBy],
-				selectedGenres: [filterGenres],
-				selectedYears: years,
-			}, () => this.fetchData());
-		} else {
-			this.setState({
-				selectedSortBy: [sortBy],
-				selectedYears: years,
-			}, () => this.fetchData());
+		if (hashObject.genres) {
+			result.selectedGenres = hashObject.genres.split(",").map(id => parseInt(id));
 		}
-	}
 
-	changeHash(frontKey, value, frontKey2, value2) {
-		let hashObj = {"&sort_by=": this.state.selectedSortBy[0],
-			"&primary_release_date.gte=": this.state.selectedYears[0],
-			"&primary_release_date.lte=": this.state.selectedYears[1],
-			"&primary_release_year=": this.state.selectedYears[0],
-			"&with_genres=": this.state.selectedGenres[0] || ""
-		};
-
-		for (let key in hashObj) {
-			if (frontKey2 !== undefined) {
-				if (frontKey2 === key && hashObj[key] !== value2) {
-					hashObj[key] = value2;
-				}
-				if (key === "&primary_release_date.gte=") {
-					hashObj[key] = value;
-				}
-				if (key === "&primary_release_year=") {
-					hashObj[key] = "";
-				}
+		if (hashObject.year) {
+			const data = hashObject.year.split(",").map(item => parseInt(item));
+			if (data.length === 2) {
+				result.selectedYears = [data.join(",")];
 			} else {
-				if (frontKey === key && hashObj[key] !== value) {
-					hashObj[key] = value;
-				}
-				if (key === "&primary_release_date.lte=" || key === "&primary_release_date.gte=") {
-					hashObj[key] = "";
-				}
+				result.selectedYears = [data[0]];
 			}
 		}
 
-		let newHashObj = [];
+		console.log(hashObject, result);
 
-		for (let key in hashObj) {
-			newHashObj.push(key + hashObj[key])
+		this.setState(result, () => {
+			this.fetchData();
+		});
+	}
+
+	updateHash() {
+		const hashdata = {};
+
+		if (this.state.selectedSortBy.length) {
+			hashdata.sortby = this.state.selectedSortBy[0];
 		}
 
-		const hash = newHashObj.join("");
+		if (this.state.selectedGenres.length) {
+			hashdata.genres = this.state.selectedGenres.join(",");
+		}
 
-		this.setFiltersHash(hash);
+		if (this.state.selectedYears.length) {
+			hashdata.year = this.state.selectedYears[0];
+		}
+
+		const hashParts = [];
+		for (let key in hashdata) {
+			hashParts.push(key + "=" + hashdata[key]);
+		}
+
+		window.location.hash = hashParts.join("&");
 	}
 
 	fetchData() {
@@ -155,14 +127,18 @@ export default class MoviesPage extends React.Component {
 	}
 
 	getFilterYear() {
-		console.log(this.state.selectedYears)
-		if (Array.isArray(this.state.selectedYears[0])) {
-			console.log(777)
-			let start = moment(this.state.selectedYears[0][0], "YYYY")
+		if (this.state.selectedYears.length === 0) {
+			return "";
+		}
+
+		if (typeof this.state.selectedYears[0] === "string") {
+			const years = this.state.selectedYears[0].split(",");
+
+			let start = moment(years[0], "YYYY")
 				.startOf("year")
 				.format("YYYY-MM-DD");
 
-			let end = moment(this.state.selectedYears[0][1], "YYYY")
+			let end = moment(years[1], "YYYY")
 				.endOf("year")
 				.format("YYYY-MM-DD");
 
@@ -193,30 +169,36 @@ export default class MoviesPage extends React.Component {
 				selectedGenres: selected,
 				//isLoading: true,
 			}, () => {
-				this.fetchData()
+				this.updateHash();
+				this.fetchData();
 			})
 		} else {
 			this.setState({
 				selectedGenres: this.state.selectedGenres.concat(id),
 				//isLoading: true,
 			}, () => {
-				this.fetchData()
+				this.updateHash();
+				this.fetchData();
 			});
 		}
 	}
 
 	handleSortChanged(id) {
-		this.changeHash("&sort_by=", id);
+		this.setState({
+			selectedSortBy: [id]
+		}, () => {
+			this.updateHash();
+			this.fetchData();
+		})
 	}
 
 	handleYearsChanged(id) {
-		if (id.length > 1) {
-			this.changeHash("&primary_release_date.gte=", id[0],"&primary_release_date.lte=", id[1])
-		} else {
-			this.setState({
-				selectedYears: [id]
-			}, () => this.changeHash("&primary_release_year=", id))
-		}
+		this.setState({
+			selectedYears: [id]
+		}, () => {
+			this.updateHash();
+			this.fetchData();
+		})
 	}
 
 	handleLoadMore() {
@@ -247,8 +229,8 @@ export default class MoviesPage extends React.Component {
 				{/*<h1 className={"headline"}>Movies according to your request</h1>*/}
 				<div className={"results"}>
 					{this.state.resultsMovies.map(item => {
-						return <div className={"result"}>
-							<MovieItem item={item} key={item.id} type={"movie"}/>
+						return <div className={"result"} key={item.id}>
+							<MovieItem item={item} type={"movie"}/>
 						</div>
 					})}
 				</div>

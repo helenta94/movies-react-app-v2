@@ -1,6 +1,7 @@
 import React from "react";
 import MoviesSlider from "../components/MoviesSlider";
 import Loader from "../components/Loader";
+import {NavLink} from "react-router-dom";
 
 export default class MoviePage extends React.Component {
   constructor(props) {
@@ -129,7 +130,10 @@ export default class MoviePage extends React.Component {
             </div>
             <div className={"genres"}>
               {this.state.movieInfo.genres.map(item => {
-                return <a href={"#"} className={"genres-item"} key={item.id} children={item.name} />
+                return <NavLink key={item.id}
+                                to={"/movies#genres=" + item.id}
+                                className={"genres-item"}
+                                children={item.name} />
               })}
             </div>
             {/*<span className={"name"}>Description:</span>*/}
