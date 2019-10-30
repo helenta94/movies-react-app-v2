@@ -95,7 +95,6 @@ export default class MoviesPage extends React.Component {
 
 	fetchData() {
 		//let country = "&certification_country=" + this.state.selectedCountry[0];
-		let page = "&page=" + this.state.currentPage;
 		let results = this.state.resultsMovies;
 
 		let genresStr = "";
@@ -109,10 +108,11 @@ export default class MoviesPage extends React.Component {
 		let filterYears = this.getFilterYear();
 
 		fetch("https://api.themoviedb.org/3/discover/movie?api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d"
-			+"&language=en-US" + sortBy + genresStr + filterYears + page +"&include_adult=false&include_video=false&page=1"
+			+"&language=en-US" + sortBy + genresStr + filterYears +"&include_adult=false&include_video=false&page=" + this.state.currentPage
 		)
 			.then(res => res.json())
 			.then(res => {
+				// не перебивай меня!!!!
 				this.state.pageChanged
 					? results = results.concat(res.results)
 					: results = res.results;
