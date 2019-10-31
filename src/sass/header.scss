@@ -2,7 +2,6 @@
 
 .my-header {
   color: rgba(255,255,255,0.8);
-
   flex: 0 0 60px;
   height: 60px;
   background-color: $primary-color;
@@ -11,6 +10,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    position: relative;
 
     padding: 0 30px;
     height: 100%;

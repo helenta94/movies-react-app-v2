@@ -112,7 +112,6 @@ export default class MoviesPage extends React.Component {
 		)
 			.then(res => res.json())
 			.then(res => {
-				// не перебивай меня!!!!
 				this.state.pageChanged
 					? results = results.concat(res.results)
 					: results = res.results;
@@ -166,16 +165,16 @@ export default class MoviesPage extends React.Component {
 			const selected = this.state.selectedGenres.slice();
 			selected.splice(index,1);
 			this.setState({
+				currentPage: 1,
 				selectedGenres: selected,
-				//isLoading: true,
 			}, () => {
 				this.updateHash();
 				this.fetchData();
 			})
 		} else {
 			this.setState({
+				currentPage: 1,
 				selectedGenres: this.state.selectedGenres.concat(id),
-				//isLoading: true,
 			}, () => {
 				this.updateHash();
 				this.fetchData();
@@ -185,6 +184,7 @@ export default class MoviesPage extends React.Component {
 
 	handleSortChanged(id) {
 		this.setState({
+			currentPage: 1,
 			selectedSortBy: [id]
 		}, () => {
 			this.updateHash();
@@ -194,6 +194,7 @@ export default class MoviesPage extends React.Component {
 
 	handleYearsChanged(id) {
 		this.setState({
+			currentPage: 1,
 			selectedYears: [id]
 		}, () => {
 			this.updateHash();
