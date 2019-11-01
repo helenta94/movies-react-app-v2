@@ -13,7 +13,6 @@ export default class Header extends React.Component {
 			persons: [],
 			movies: [],
 		};
-
 	}
 
 	fetchData() {
