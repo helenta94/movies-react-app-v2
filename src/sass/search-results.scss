@@ -7,6 +7,7 @@
   z-index: 100;
   width: 320px;
   background-color: $background-additional-color;
+  box-shadow: 0 9px 20px rgba(0,0,0,0.2);
 
   .search-movie-item {
     display: flex;
@@ -17,7 +18,7 @@
     transition: 320ms;
 
     .poster {
-      width: 50px;
+      width: 45px;
     }
 
     .info {
@@ -30,14 +31,16 @@
 
       .name {
         display: block;
+
+        font-size: 16px;
         margin-top: -9px;
         margin-bottom: 3px;
       }
 
       .type {
-        font-size: 12px;
+        font-size: 11px;
         text-transform: uppercase;
-        padding: 2px 5px;
+        padding: 2px 5px 0;
         border-radius: 2px;
         background-color: $color-purple;
 
@@ -50,6 +53,46 @@
     &:hover {
       cursor: pointer;
       background-color: $background-additional-light-color;
+
+      .info .name {
+        color: $primary-color
+      }
     }
+  }
+
+  .persons {
+    //padding-bottom: 15px;
+    a {
+      display: block;
+      padding: 3px 15px;
+      margin-top: 4px;
+      transition: 320ms;
+
+      &:hover {
+        cursor: pointer;
+        background-color: $background-additional-light-color;
+        color: $primary-color;
+      }
+    }
+  }
+  .all-results {
+    display: block;
+    line-height: 36px;
+    margin-top: 15px;
+    padding-left: 15px;
+    background-color: $background-additional-light-color;
+    transition: 320ms;
+
+    &:hover {
+      cursor: pointer;
+      color: $primary-color;
+    }
+  }
+
+  .not-found-result {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
   }
 }

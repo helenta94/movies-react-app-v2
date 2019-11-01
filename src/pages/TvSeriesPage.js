@@ -26,8 +26,74 @@ export default class MoviesPage extends React.Component {
       response: [],
     };
 
-    this.fetchData();
   }
+
+  componentDidMount() {
+    this.configFilters();
+  }
+
+  configFilters() {
+    const result = {};
+    const hashObject = {};
+    let hashString = window.location.hash;
+    if (hashString.length > 0 && hashString[0] === "#") {
+      hashString = hashString.substr(1);
+    }
+
+    hashString.split("&").forEach((item) => {
+      const kv = item.split("=", 2);
+      if (kv.length === 2) {
+        hashObject[kv[0]] = kv[1];
+      }
+    });
+
+    if (hashObject.sortby) {
+      result.selectedSortBy = [hashObject.sortby];
+    }
+
+    if (hashObject.genres) {
+      result.selectedGenres = hashObject.genres.split(",").map(id => parseInt(id));
+    }
+
+    if (hashObject.year) {
+      const data = hashObject.year.split(",").map(item => parseInt(item));
+      if (data.length === 2) {
+        result.selectedYears = [data.join(",")];
+      } else {
+        result.selectedYears = [data[0]];
+      }
+    }
+
+    console.log(hashObject, result);
+
+    this.setState(result, () => {
+      this.fetchData();
+    });
+  }
+
+  updateHash() {
+    const hashdata = {};
+
+    if (this.state.selectedSortBy.length) {
+      hashdata.sortby = this.state.selectedSortBy[0];
+    }
+
+    if (this.state.selectedGenres.length) {
+      hashdata.genres = this.state.selectedGenres.join(",");
+    }
+
+    if (this.state.selectedYears.length) {
+      hashdata.year = this.state.selectedYears[0];
+    }
+
+    const hashParts = [];
+    for (let key in hashdata) {
+      hashParts.push(key + "=" + hashdata[key]);
+    }
+
+    window.location.hash = hashParts.join("&");
+  }
+
 
   fetchData() {
     let genresStr = "";
@@ -96,35 +162,34 @@ export default class MoviesPage extends React.Component {
       const selected = this.state.selectedGenres.slice();
       selected.splice(index,1);
       this.setState({
+        currentPage: 1,
         selectedGenres: selected,
         //isLoading: true,
       }, () => {
-        this.fetchData()
+        this.updateHash();
+        this.fetchData();
       })
     } else {
       this.setState({
+        currentPage: 1,
         selectedGenres: this.state.selectedGenres.concat(id),
         //isLoading: true,
       }, () => {
-        this.fetchData()
-      });
+        this.updateHash();
+        this.fetchData();
+      })
     }
   }
 
   handleSortChanged(id) {
     this.setState({
+      currentPage: 1,
       selectedSortBy: [id],
       isLoading: true,
     }, () => {
-      this.fetchData()
-    });
-  }
-
-  handleYearsChanged(id) {
-    this.setState({
-      selectedYears: [id],
-      isLoading: true,
-    }, () => this.fetchData());
+      this.updateHash();
+      this.fetchData();
+    })
   }
 
   handleLoadMore() {
@@ -133,16 +198,7 @@ export default class MoviesPage extends React.Component {
       pageChanged: true,
     }, () => {
       this.fetchData()})
-
   }
-
-  // componentDidMount() {
-  // 	window.addEventListener('scroll', this.handleMoreMovie.bind(this));
-  // }
-  //
-  // componentWillUnmount() {
-  // 	window.addEventListener('scroll', this.handleMoreMovie.bind(this));
-  // }
 
   render() {
     if (this.state.isLoading) {

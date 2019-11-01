@@ -1,6 +1,7 @@
 import React from "react";
 import Loader from "../components/Loader";
 import MoviesSlider from "../components/MoviesSlider";
+import {NavLink} from "react-router-dom";
 
 export default class TvShowPage extends React.Component {
 
@@ -122,7 +123,7 @@ export default class TvShowPage extends React.Component {
             </div>
             <div className={"genres"}>
               {this.state.tvInfo.genres.map(item => {
-                return <a href={"#"} className={"genres-item"} key={item.id} children={item.name} />
+                return <NavLink to={"/tv-series#genres=" + item.id} className={"genres-item"} key={item.id} children={item.name} />
               })}
             </div>
             {/*<span className={"name"}>Description:</span>*/}
