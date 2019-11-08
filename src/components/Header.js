@@ -16,10 +16,8 @@ export default class Header extends React.Component {
 
 	componentDidMount() {
 		document.body.addEventListener("click", (e) => {
-			if (!e.target.closest(".search") && !e.target.classList.contains("search-results")) {
-				this.setState({
-					searchValue: ""
-				})
+			if (!this.searchRef.contains(e.target)) {
+				this.resetSearch();
 			}
 		})
 	}
@@ -53,6 +51,12 @@ export default class Header extends React.Component {
 		})
 	}
 
+	resetSearch() {
+		this.setState({
+			searchValue: ""
+		})
+	}
+
 	render() {
 		return <header className={"my-header"}>
 			<div className={"container"}>
@@ -67,12 +71,13 @@ export default class Header extends React.Component {
 						{/*<Link to={"/cartoons"} className={"item"}>Cartoons</Link>*/}
 					</div>
 				</div>
-				<div className={"left-block"}>
+				<div className={"left-block"} ref={(ref) => this.searchRef = ref}>
 					<div className={"search"}>
 						<i className="fas fa-search" />
 						<input onChange={(e) => this.handlerChangeSearch(e)}
 									 value={this.state.searchValue}
-									 className={"field-search"} placeholder={"Search"}/>
+									 className={"field-search"}
+									 placeholder={"Search"}/>
 					</div>
 					{this.state.searchValue !== ""
 						? <div className={"search-results"}>
@@ -80,6 +85,7 @@ export default class Header extends React.Component {
 								{this.state.movies.map((item, index) => {
 									if (index < 3) {
 										return <Link to={item.media_type === "movie" ? "/movies/" + item.id : "/tv-shows/" + item.id}
+																 onClick={() => this.resetSearch()}
 																 className={"search-movie-item"}
 																 key={item.id}>
 											<img className={"poster"}
@@ -104,15 +110,10 @@ export default class Header extends React.Component {
 							{/*	})}*/}
 							{/*</div>*/}
 							{this.state.movies.length > 3 || this.state.persons.length > 3
-								? <Link to={{
-										pathname: "/search",
-										state: {
-											searchValue: this.state.searchValue,
-									}
-								}}
+								? <Link to={{pathname: "/search", state: {searchValue: this.state.searchValue}}}
+												onClick={() => this.resetSearch()}
 												className={"all-results"}
 												children={"All results"}
-
 								/>
 								: null
 							}

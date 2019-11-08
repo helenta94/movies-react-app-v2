@@ -2,12 +2,15 @@ import React from "react";
 import MoviesSlider from "../components/MoviesSlider";
 import Loader from "../components/Loader";
 import {NavLink} from "react-router-dom";
+import {fetchMovieData} from "../tmdb";
+import NotFoundPage from "./NotFoundPage";
 
 export default class MoviePage extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      movieNotFound: false,
       isLoading: true,
       movieInfo: null,
       expandedCast: false,
@@ -15,7 +18,6 @@ export default class MoviePage extends React.Component {
       crew: [],
       recommendationMovies: [],
       similarMovies: [],
-
     };
 
     this.id = props.match.params.id;
@@ -38,20 +40,37 @@ export default class MoviePage extends React.Component {
   }
 
   fetchData() {
-    Promise.all([
-      fetch("https://api.themoviedb.org/3/movie/"+this.props.match.params.id+"?api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d&language=en-US"),
-      fetch("https://api.themoviedb.org/3/movie/"+this.props.match.params.id+ "/credits?api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d"),
-      fetch("https://api.themoviedb.org/3/movie/"+this.props.match.params.id+"/recommendations?api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d&language=en-US&page=1"),
-      fetch("https://api.themoviedb.org/3/movie/"+this.props.match.params.id+"/similar?api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d&language=en-US&page=1")
-    ]).then(response => Promise.all(response.map(res => res.json())))
-      .then(response => {
+    fetchMovieData(this.props.match.params.id)
+      .then((res) => {
+        if (res.status === 404) {
+          const e = Error("Movie not found")
+          e.response = res;
+          throw e;
+        } else {
+          return res.json()
+        }
+      })
+      .then((res) => {
+        Promise.all([
+          fetchMovieData(this.props.match.params.id, "credits"),
+          fetchMovieData(this.props.match.params.id, "recommendations"),
+          fetchMovieData(this.props.match.params.id, "similar"),
+        ]).then(response => Promise.all(response.map(res => res.json())))
+          .then(response => {
+            this.setState({
+              movieInfo: res,
+              cast: response[0].cast,
+              crew: response[0].crew,
+              recommendationMovies: response[1].results,
+              similarMovies: response[2].results,
+              isLoading: false
+            });
+          });
+      })
+      .catch((err) => {
         this.setState({
-          movieInfo: response[0],
-          cast: response[1].cast,
-          crew: response[1].crew,
-          recommendationMovies: response[2].results,
-          similarMovies: response[3].results,
-          isLoading: false
+          isLoading: false,
+          movieNotFound: true
         });
       });
   }
@@ -99,6 +118,10 @@ export default class MoviePage extends React.Component {
       return <div className="movie-page-loader">
         <Loader size="64px" />
       </div>;
+    }
+
+    if (this.state.movieNotFound) {
+      return <NotFoundPage />;
     }
 
     const settings = {

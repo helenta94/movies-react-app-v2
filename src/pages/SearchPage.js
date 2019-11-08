@@ -43,6 +43,7 @@ export default class SearchPage extends React.Component {
   }
 
   fetchData() {
+    console.log(this.state.searchValue)
     fetch("https://api.themoviedb.org/3/search/multi?api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d&language=en-US&query="
       + this.state.searchValue +"&include_adult=false&page="+this.state.currentPage)
       .then(response => response.json())

@@ -4,6 +4,7 @@ import MoviesSlider from "../components/MoviesSlider";
 import {NavLink} from "react-router-dom";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Loader from "../components/Loader";
+import {fetchPopularMovies, fetchPopularTv, fetchUpcomingMovies, fetchDiscoverMovies} from "../tmdb";
 
 export default class HomePage extends React.Component {
   constructor(props) {
@@ -19,8 +20,6 @@ export default class HomePage extends React.Component {
 
     };
 
-    console.log(window.location.hash);
-
     this.months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
     this.slickRef = React.createRef();
     this.apiKey = "api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d";
@@ -30,12 +29,21 @@ export default class HomePage extends React.Component {
 
   fetchData() {
     Promise.all([
-      fetch("https://api.themoviedb.org/3/movie/popular?"+this.apiKey+"&language=en-US&page=1"),
-      fetch("https://api.themoviedb.org/3/movie/upcoming?api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d&language=en-US&page=1"),
-      fetch("https://api.themoviedb.org/3/tv/popular?"+this.apiKey+"&language=en-US&page=1"),
-      fetch("https://api.themoviedb.org/3/discover/movie?"+this.apiKey+"&certification_country=US&certification.lte=G&with_genres=16&sort_by=popularity.desc"),
-      fetch("https://api.themoviedb.org/3/discover/movie?api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d"
-        +"&language=en-US&sort_by=popularity.desc&with_genres=35,10749&include_adult=false&include_video=false&page=1"),
+      fetchPopularMovies(),
+      fetchUpcomingMovies(),
+      fetchPopularTv(),
+      fetchDiscoverMovies({
+        "certification_country": "US",
+        "certification.lte": "G",
+        "width_genres": "16",
+        "sort_by": "popularity.desc"
+      }),
+      fetchDiscoverMovies({
+        "sort_by": "popularity.desc",
+        "with_genres": "35,10749",
+        "include_adult": false,
+        "include_video": false,
+      }),
     ]).then(response => Promise.all(response.map(res => res.json())))
       .then(response => this.setState({
         popularMovies: response[0].results,

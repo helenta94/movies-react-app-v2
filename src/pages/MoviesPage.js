@@ -62,9 +62,7 @@ export default class MoviesPage extends React.Component {
 				result.selectedYears = [data[0]];
 			}
 		}
-
-		console.log(hashObject, result);
-
+		
 		this.setState(result, () => {
 			this.fetchData();
 		});

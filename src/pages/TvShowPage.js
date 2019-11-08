@@ -2,6 +2,7 @@ import React from "react";
 import Loader from "../components/Loader";
 import MoviesSlider from "../components/MoviesSlider";
 import {NavLink} from "react-router-dom";
+import {fetchTvData, fetchTvSeasonData} from "../tmdb";
 
 export default class TvShowPage extends React.Component {
 
@@ -36,9 +37,9 @@ export default class TvShowPage extends React.Component {
       seasons: [],
     });
     Promise.all([
-      fetch("https://api.themoviedb.org/3/tv/"+ this.props.match.params.id +"?api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d&append_to_response=credits&language=en-US"),
-      fetch("https://api.themoviedb.org/3/tv/"+ this.props.match.params.id +"/similar?api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d&language=en-US&page=1"),
-      fetch("https://api.themoviedb.org/3/tv/"+ this.props.match.params.id +"/recommendations?api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d&language=en-US&page=1"),
+      fetchTvData(this.props.match.params.id, undefined ,"credits"),
+      fetchTvData(this.props.match.params.id, "similar" ,undefined),
+      fetchTvData(this.props.match.params.id, "recommendations" ,undefined),
     ]).then(response => Promise.all(response.map(res => res.json())))
       .then(response => this.setState({
         tvInfo: response[0],
@@ -50,9 +51,8 @@ export default class TvShowPage extends React.Component {
       .then(() => this.fetchSeason(1))
   }
 
-  fetchSeason(seasonNumber){
-    fetch("https://api.themoviedb.org/3/tv/"+ this.props.match.params.id
-      +"/season/"+seasonNumber+"?api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d&language=en-US")
+  fetchSeason(seasonNumber) {
+    fetchTvSeasonData(this.props.match.params.id, seasonNumber)
       .then(response => response.json())
       .then(response => this.setState({
         seasons: this.state.seasons.concat(response),
