@@ -125,7 +125,8 @@ export default class MoviePage extends React.Component {
             <img className={"poster"} src={"https://image.tmdb.org/t/p/w200"+this.state.movieInfo.poster_path} alt={"movie poster"}/>
           </div>
           <div className={"col col-two"}>
-            <div className={"headline"}>{this.state.movieInfo.title}
+            <div className={"headline"}>
+              {this.state.movieInfo.title}
               <span className={"type movie"}>Movie</span>
             </div>
             <div className={"genres"}>

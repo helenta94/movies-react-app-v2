@@ -1,7 +1,6 @@
 import React from 'react';
 import {NavLink} from "react-router-dom";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import SearchResults from "./SearchResults";
 import moment from "moment";
 
 export default class Header extends React.Component {
@@ -13,6 +12,16 @@ export default class Header extends React.Component {
 			persons: [],
 			movies: [],
 		};
+	}
+
+	componentDidMount() {
+		document.body.addEventListener("click", (e) => {
+			if (!e.target.closest(".search") && !e.target.classList.contains("search-results")) {
+				this.setState({
+					searchValue: ""
+				})
+			}
+		})
 	}
 
 	fetchData() {
@@ -80,22 +89,31 @@ export default class Header extends React.Component {
 												<div>
 													<span className={"name"}>{item.title || item.name}</span>
 													<span className={item.media_type === "movie" ? "type" : "type tv"}>
-													{item.media_type === "tv" ? "tv-show" : item.media_type}
-												</span>
+														{item.media_type === "tv" ? "tv-show" : item.media_type}
+													</span>
 												</div>
 											</div>
 										</Link>
 									}
 								})}
 							</div>
-							<div className={"persons"}>
-								{this.state.persons.map((item, index) => {
-									if (index < 3) {
-										return <Link to={"/person/" + item.id} key={item.id} children={item.name}/>}
-								})}
-							</div>
+							{/*<div className={"persons"}>*/}
+							{/*	{this.state.persons.map((item, index) => {*/}
+							{/*		if (index < 3) {*/}
+							{/*			return <Link to={"/person/" + item.id} key={item.id} children={item.name}/>}*/}
+							{/*	})}*/}
+							{/*</div>*/}
 							{this.state.movies.length > 3 || this.state.persons.length > 3
-								? <Link to={"/search/alll-results"} className={"all-results"}>All results</Link>
+								? <Link to={{
+										pathname: "/search",
+										state: {
+											searchValue: this.state.searchValue,
+									}
+								}}
+												className={"all-results"}
+												children={"All results"}
+
+								/>
 								: null
 							}
 							{this.state.movies.length === 0 && this.state.persons.length === 0

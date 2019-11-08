@@ -3,7 +3,6 @@ import Slider from "react-slick";
 import MovieItem from "./MovieItem";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
-
 export default class MoviesSlider extends React.Component {
 
   constructor(props) {
@@ -18,6 +17,18 @@ export default class MoviesSlider extends React.Component {
 
   handlerClickSliderNext() {
     this.slickRef.current.slickNext();
+  }
+
+  goToPage() {
+    if (this.props.type === "movie") {
+      return this.props.genres
+        ? "/movies#genres=" + this.props.genres
+        : "/movies"
+    } else {
+      return this.props.genres
+        ? "/tv-series#genres=" + this.props.genres
+        : "/tv-series"
+    }
   }
 
   render() {
@@ -50,7 +61,7 @@ export default class MoviesSlider extends React.Component {
           {this.props.isShow ? <div className={"item-all-movies"}>
             <span className={"name"} children={"show all"}/>
             <i className="fas fa-long-arrow-alt-right"/>
-            <Link to={"/movies"} className={"all-movies"}/>
+            <Link to={this.goToPage()} className={"all-movies"}/>
           </div> : null}
         </Slider>
       </div>

@@ -8,10 +8,16 @@ export default class MovieItem extends React.Component {
     return genreIds.map(getGenreNameById).join(", ")
   }
 
+
   render() {
     return <div className={"movie-item"}>
       <div className={"poster"}>
         <img alt={"movie-image"} src={"https://image.tmdb.org/t/p/w200" + this.props.item.poster_path}/>
+        {this.props.isShowType
+          ? <div className={this.props.type === "tv" ? "type-show" : "type-show purple"}>
+            {this.props.type === "tv" ? "tv show" : "movie"}
+          </div>
+          : null}
       </div>
       <div className={"info"}>
         <span className={"name"}>{this.props.item.title || this.props.item.name}</span>

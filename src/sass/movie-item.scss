@@ -35,6 +35,27 @@
       transform: rotate(30deg);
       transition: 500ms;
     }
+
+    .type-show {
+      position: absolute;
+      top: 10px; left: 10px;
+
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      height: 22px;
+      line-height: 24px;
+      letter-spacing: 0.6px;
+      padding: 0 10px;
+      border-radius: 2px;
+      background-color: $color-red;
+
+      z-index: 10000;
+
+      &.purple {
+        background-color: $color-purple
+      }
+    }
   }
 
   .info {
@@ -63,7 +84,6 @@
 
   &:hover {
     cursor: pointer;
-    color: $primary-color;
 
     .poster {
       box-shadow: 0 0 10px 0 rgba(0,0,0,0.7);
@@ -81,6 +101,11 @@
         box-shadow: 27px 24px 22px 12px rgba(255, 255, 255, 0.25);
       }
     }
+
+    .info {
+      color: $primary-color;
+    }
+
   }
 
   a {

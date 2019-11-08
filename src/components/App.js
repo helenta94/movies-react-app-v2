@@ -7,6 +7,7 @@ import TvShowPage from "../pages/TvShowPage";
 import TvSeriesPage from "../pages/TvSeriesPage";
 import PersonPage from "../pages/PersonPage";
 import {BrowserRouter as Router, Route} from "react-router-dom";
+import SearchPage from "../pages/SearchPage";
 
 export default class App extends React.Component {
 
@@ -24,6 +25,7 @@ export default class App extends React.Component {
         <Route path={"/tv-series"} exact component={TvSeriesPage} />
         <Route path={"/tv-shows/:id"} exact component={TvShowPage} />
         <Route path={"/person/:id"} exact component={PersonPage} />
+        <Route path={"/search"} exact component={SearchPage} />
         <footer className={"footer"}>
           <div className={"container"}>
             <span className={"text"}>Data provided by </span>

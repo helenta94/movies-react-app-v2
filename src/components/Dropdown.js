@@ -15,22 +15,20 @@ export default class Dropdown extends React.Component {
     this.props.handlerClick(id);
   }
 
-  handlerClickDropdown() {
+  handlerMouseEnterDropdown() {
+    clearTimeout(this.timeout);
+
     this.setState({
-      dropdownIsOpen: !this.state.dropdownIsOpen
+      dropdownIsOpen: true
     })
   }
 
-  handlerClickBody(e) {
-    if (e.target.closest(".dropdown-view") !== this.dropdownItemRef.current) {
-      this.setState({
-        dropdownIsOpen: false
-      });
-    }
-  }
-
-  componentDidMount() {
-    document.body.addEventListener("click", this.handlerClickBody.bind(this))
+  handlerMouseLeaveDropdown(e) {
+      this.timeout = setTimeout(() => {
+        this.setState({
+          dropdownIsOpen: false
+        });
+      }, 320)
   }
 
   getItemClassNames(id) {
@@ -53,8 +51,10 @@ export default class Dropdown extends React.Component {
 
   render() {
     return <div className={this.state.dropdownIsOpen ? "dropdown-view open" : "dropdown-view"}
-                ref={this.dropdownItemRef}>
-      <div className={"item-name"} onClick={() => this.handlerClickDropdown()}>
+                ref={this.dropdownItemRef}
+                onMouseLeave={() => this.handlerMouseLeaveDropdown()}
+                onMouseEnter={() => this.handlerMouseEnterDropdown()}>
+      <div className={"item-name"}>
         <span className={"name-text"}>{this.getLabel()}</span>
         <i className="fas fa-chevron-right" />
       </div>

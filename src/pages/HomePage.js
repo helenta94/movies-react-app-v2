@@ -33,7 +33,7 @@ export default class HomePage extends React.Component {
       fetch("https://api.themoviedb.org/3/movie/popular?"+this.apiKey+"&language=en-US&page=1"),
       fetch("https://api.themoviedb.org/3/movie/upcoming?api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d&language=en-US&page=1"),
       fetch("https://api.themoviedb.org/3/tv/popular?"+this.apiKey+"&language=en-US&page=1"),
-      fetch("https://api.themoviedb.org/3/discover/movie?"+this.apiKey+"&certification_country=US&certification.lte=G&sort_by=popularity.desc"),
+      fetch("https://api.themoviedb.org/3/discover/movie?"+this.apiKey+"&certification_country=US&certification.lte=G&with_genres=16&sort_by=popularity.desc"),
       fetch("https://api.themoviedb.org/3/discover/movie?api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d"
         +"&language=en-US&sort_by=popularity.desc&with_genres=35,10749&include_adult=false&include_video=false&page=1"),
     ]).then(response => Promise.all(response.map(res => res.json())))
@@ -121,14 +121,6 @@ export default class HomePage extends React.Component {
         </section>
         <section className={"movies-slider"}>
           <div className={"container"}>
-            <MoviesSlider moviesList={this.state.popularKidsMovie}
-                          name={"Popular movies for kids"}
-                          isShow={true}
-                          type={"movie"}/>
-          </div>
-        </section>
-        <section className={"movies-slider"}>
-          <div className={"container"}>
             <MoviesSlider moviesList={this.state.popularTv}
                           name={"Popular TV"}
                           isShow={true}
@@ -140,6 +132,15 @@ export default class HomePage extends React.Component {
             <MoviesSlider moviesList={this.state.popularComedyRomance}
                           name={"Popular comedy romance"}
                           isShow={true}
+                          type={"movie"}
+                          genres={[35,10749]}/>
+          </div>
+        </section>
+        <section className={"movies-slider"}>
+          <div className={"container"}>
+            <MoviesSlider moviesList={this.state.popularKidsMovie}
+                          name={"Popular movies for kids"}
+                          isShow={false}
                           type={"movie"}/>
           </div>
         </section>

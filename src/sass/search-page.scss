@@ -1,0 +1,25 @@
+@import "variables";
+
+.search-page {
+  .headline {
+    color: #7e7e7e;
+  }
+
+  .search {
+    position: relative;
+
+    height: 50px;
+    margin: 10px 30px 10px 0;
+    background: none !important;
+
+    .search-field {
+      width: 420px;
+      height: 100%;
+      color: #7e7e7e;
+      border-bottom: 1px solid #7e7e7e;
+      line-height: 50px;
+      font-size: 20px;
+    }
+  }
+
+}

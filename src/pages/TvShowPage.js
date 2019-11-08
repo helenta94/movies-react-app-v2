@@ -109,7 +109,8 @@ export default class TvShowPage extends React.Component {
     }
 
     return <div className={"page movie-page tv-show-page"}>
-      <div className={"movie-page-background"} style={{backgroundImage: `url(https://image.tmdb.org/t/p/w1280${this.state.tvInfo.backdrop_path})`}} >
+      <div className={"movie-page-background"}
+           style={{backgroundImage: `url(https://image.tmdb.org/t/p/w1280${this.state.tvInfo.backdrop_path})`}} >
         <div className={"shadow"}/>
       </div>
       <div className={"container"}>
@@ -123,7 +124,10 @@ export default class TvShowPage extends React.Component {
             </div>
             <div className={"genres"}>
               {this.state.tvInfo.genres.map(item => {
-                return <NavLink to={"/tv-series#genres=" + item.id} className={"genres-item"} key={item.id} children={item.name} />
+                return <NavLink to={"/tv-series#genres=" + item.id}
+                                className={"genres-item"}
+                                key={item.id}
+                                children={item.name} />
               })}
             </div>
             {/*<span className={"name"}>Description:</span>*/}

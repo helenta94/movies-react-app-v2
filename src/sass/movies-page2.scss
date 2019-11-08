@@ -19,7 +19,8 @@
   margin-top: 50px;
 }
 
-.movies-page .results {
+.movies-page .results,
+.search-page .results {
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
