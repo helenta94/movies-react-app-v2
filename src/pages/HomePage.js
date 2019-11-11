@@ -46,14 +46,13 @@ export default class HomePage extends React.Component {
       }),
     ]).then(response => Promise.all(response.map(res => res.json())))
       .then(response => this.setState({
-        popularMovies: response[0].results,
-        upcomingMovies: response[1].results,
-        popularTv: response[2].results,
+        popularMovies: response[0].results.slice(0, 17),
+        upcomingMovies: response[1].results.slice(0, 17),
+        popularTv: response[2].results.slice(0, 17),
         isLoading: false,
-        popularKidsMovie: response[3].results,
-        popularComedyRomance: response[4].results,
+        popularKidsMovie: response[3].results.slice(0, 18),
+        popularComedyRomance: response[4].results.slice(0, 17),
       }))
-      .then(response => console.log(this.state.popularComedyRomance))
   }
 
   formatReleaseDate(date) {
@@ -71,7 +70,7 @@ export default class HomePage extends React.Component {
       autoplaySpeed: 4000,
       arrows: false,
       centerMode: true,
-      centerPadding: "14%",
+      centerPadding: "13%",
       initialSlide: 6,
       responsive: [{
         breakpoint: 600,

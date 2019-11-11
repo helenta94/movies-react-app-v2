@@ -1,19 +1,26 @@
 @import "variables";
 
+.movies-slider .container {
+  padding-left: 0;
+  padding-right: 0;
+
+  //.slick-list {
+  //  width: 1370px;
+  //}
+}
+
 .movies-list {
   padding: 30px 0;
 
-  .item-all-movies {
-    width: 98% !important;
-  }
-
-  .list {
-    margin: 0 -8px 0 -15px;
+  .test {
+    width: 233px;
   }
 
   .movies-list-header {
     display: flex;
     justify-content: space-between;
+    padding-left: 15px;
+    padding-right: 15px;
 
     .headline {
       margin-bottom: 10px;
@@ -32,12 +39,18 @@
         border: 1px solid $primary-color;
         color: $primary-color;
       }
+
+      &.not-slides {
+        border: 1px solid rgba(255,255,255,0.18);
+        color: rgba(255,255,255,0.18);
+        cursor: auto;
+      }
     }
   }
 
   .item-all-movies {
     position: relative;
-    width: 200px !important;
+    width: 210px !important;
     height: 300px;
     margin-top: 15px;
     margin-left: 10px;

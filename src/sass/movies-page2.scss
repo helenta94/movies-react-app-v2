@@ -12,11 +12,30 @@
   justify-content: flex-start;
 
   padding-top: 10px;
-
 }
 
 .movies-page .headline {
   margin-top: 50px;
+}
+
+.movies-page .not-result {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  margin-top: 100px;
+  color: #7e7e7e;
+
+  .fa-frown {
+    font-size: 48px;
+    margin-bottom: 30px;
+  }
+
+  .text {
+    font-size: 18px;
+  }
+
 }
 
 .movies-page .results,
@@ -25,17 +44,19 @@
   justify-content: flex-start;
   flex-wrap: wrap;
 
-  margin: 0 -10px 0 -14px;
+  margin: 0 -15px 0 -10px;
   padding-top: 30px;
   padding-bottom: 40px;
 
   .result {
-    max-width: 220px !important;
-    flex-basis: 220px;
+    max-width: 224px !important;
+    flex-basis: 224px;
     flex-shrink: 0;
     margin: 0 3px 30px 0;
     //margin: auto;
   }
+
+
 
   //&:after {
   //  flex:1;

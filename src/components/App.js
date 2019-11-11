@@ -26,7 +26,7 @@ export default class App extends React.Component {
           <Route path={"/movies"} exact component={MoviesPage}/>
           <Route path={"/movies/:id"} exact component={MoviePage} />
           <Route path={"/tv-series"} exact component={TvSeriesPage} />
-          <Route path={"/tv-shows/:id"} exact component={TvShowPage} />
+          <Route path={"/tv-series/:id"} exact component={TvShowPage} />
           <Route path={"/person/:id"} exact component={PersonPage} />
           <Route path={"/search"} exact component={SearchPage} />
           <Route path={"*"} component={NotFoundPage} />

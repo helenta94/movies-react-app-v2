@@ -3,6 +3,7 @@ import Loader from "../components/Loader";
 import MoviesSlider from "../components/MoviesSlider";
 import {NavLink} from "react-router-dom";
 import {fetchTvData, fetchTvSeasonData} from "../tmdb";
+import NotFoundPage from "./NotFoundPage";
 
 export default class TvShowPage extends React.Component {
 
@@ -16,7 +17,7 @@ export default class TvShowPage extends React.Component {
       seasons: [],
       similarTv: [],
       recommendationsTv: [],
-
+      movieNotFound: false,
     };
 
     this.months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -27,7 +28,6 @@ export default class TvShowPage extends React.Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.props.match.params.id !== prevProps.match.params.id) {
       this.fetchData();
-
     }
   }
 
@@ -36,19 +36,35 @@ export default class TvShowPage extends React.Component {
       isLoading: true,
       seasons: [],
     });
-    Promise.all([
-      fetchTvData(this.props.match.params.id, undefined ,"credits"),
-      fetchTvData(this.props.match.params.id, "similar" ,undefined),
-      fetchTvData(this.props.match.params.id, "recommendations" ,undefined),
-    ]).then(response => Promise.all(response.map(res => res.json())))
-      .then(response => this.setState({
-        tvInfo: response[0],
-        similarTv: response[1].results,
-        recommendationsTv: response[2].results,
-        isLoading: false
-      }))
-      .then(() => console.log(this.state.similarTv))
-      .then(() => this.fetchSeason(1))
+
+    fetchTvData(this.props.match.params.id, undefined ,"credits")
+      .then(res => {
+        if (res.status === 404) {
+          const e = Error("Movie not found");
+          e.response = res;
+          throw e;
+        } else {
+          return res.json()
+        }
+      }).then(res => {
+        Promise.all([
+          fetchTvData(this.props.match.params.id, "similar" ,undefined),
+          fetchTvData(this.props.match.params.id, "recommendations" ,undefined),
+        ]).then(response => Promise.all(response.map(res => res.json())))
+          .then(response => this.setState({
+            tvInfo: res,
+            similarTv: response[0].results,
+            recommendationsTv: response[1].results,
+            isLoading: false
+          }))
+          .then(() => console.log(this.state.similarTv))
+          .then(() => this.fetchSeason(1))
+      }).catch(err => {
+        this.setState({
+          movieNotFound: true,
+          isLoading: false,
+        })
+    })
   }
 
   fetchSeason(seasonNumber) {
@@ -106,6 +122,10 @@ export default class TvShowPage extends React.Component {
       return <div className={"movie-page-loader"}>
         <Loader/>
       </div>
+    }
+
+    if (this.state.movieNotFound) {
+      return <NotFoundPage/>
     }
 
     return <div className={"page movie-page tv-show-page"}>
@@ -191,7 +211,7 @@ export default class TvShowPage extends React.Component {
                 <div className={"season-name"}>
                   <span className={"name"}>{item.name}</span>
                   <div className={"poster"}>
-                    <img src={"https://image.tmdb.org/t/p/w200" + item.poster_path} />
+                    <img alt={"poster"} src={"https://image.tmdb.org/t/p/w200" + item.poster_path} />
                   </div>
                 </div>
                 <div className={"episodes"}>
@@ -211,14 +231,27 @@ export default class TvShowPage extends React.Component {
             }}
           })}
         </div>
-        <MoviesSlider moviesList={this.state.similarTv}
-                      name={"Similar TV"}
-                      isShow={false}
-                      type={"tv"}/>
-        <MoviesSlider moviesList={this.state.recommendationsTv}
-                      name={"Recomendations TV"}
-                      isShow={false}
-                      type={"tv"}/>
+        {this.state.similarTv.length > 0
+          ? <section className={"movies-slider"}>
+            <div className={"container"}>
+              <MoviesSlider moviesList={this.state.similarTv}
+                            name={"Similar TV"}
+                            isShow={false}
+                            type={"movie"}/>
+            </div>
+          </section>
+          : null}
+        {this.state.recommendationsTv.length > 0
+          ? <section className={"movies-slider"}>
+            <div className={"container"}>
+              <MoviesSlider moviesList={this.state.recommendationsTv}
+                            name={"Recommendation TV"}
+                            isShow={false}
+                            type={"movie"}/>
+            </div>
+          </section>
+          : null
+        }
       </div>
     </div>
   }

@@ -218,8 +218,8 @@ export default class MoviesPage extends React.Component {
         {/*<h1 className={"headline"}>Movies according to your request</h1>*/}
         <div className={"results"}>
           {this.state.resultsMovies.map(item => {
-            return <div className={"result"}>
-              <MovieItem item={item} key={item.id} type={"tv"}/>
+            return <div className={"result"} key={item.id}>
+              <MovieItem item={item} type={"tv"}/>
             </div>
           })}
         </div>

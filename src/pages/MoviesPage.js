@@ -240,7 +240,10 @@ export default class MoviesPage extends React.Component {
 					</button>
 					: null}
 				{this.state.totalPages < this.state.currentPage
-					? <div>Sorry, there are no results for your request</div>
+					? <div className={"not-result"}>
+							<i className="far fa-frown"/>
+							<span className={"text"}>Sorry, there are no results for your request</span>
+						</div>
 					: null
 				}
 			</div>

@@ -117,3 +117,22 @@
     height: 100%;
   }
 }
+
+.movie-item .poster .no-poster {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-content: center;
+
+  background-color: $background-no-poster-color;
+
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  color: $text-color;
+
+  .fa-frown {
+    font-size: 42px;
+    margin-bottom: 20px;
+  }
+}

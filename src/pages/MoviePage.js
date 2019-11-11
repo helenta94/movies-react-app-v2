@@ -22,9 +22,8 @@ export default class MoviePage extends React.Component {
 
     this.id = props.match.params.id;
     this.months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-    this.apiKey = "api_key=b4d514a9c5639b1b1d3f0ab2bf94f96d";
 
-    this.fetchData()
+    this.fetchData();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -43,11 +42,11 @@ export default class MoviePage extends React.Component {
     fetchMovieData(this.props.match.params.id)
       .then((res) => {
         if (res.status === 404) {
-          const e = Error("Movie not found")
+          const e = Error("Movie not found");
           e.response = res;
           throw e;
         } else {
-          return res.json()
+          return res.json();
         }
       })
       .then((res) => {
@@ -61,8 +60,8 @@ export default class MoviePage extends React.Component {
               movieInfo: res,
               cast: response[0].cast,
               crew: response[0].crew,
-              recommendationMovies: response[1].results,
-              similarMovies: response[2].results,
+              recommendationMovies: response[1].results.slice(0, 18),
+              similarMovies: response[2].results.slice(0, 18),
               isLoading: false
             });
           });
@@ -191,7 +190,7 @@ export default class MoviePage extends React.Component {
         ? <section className={"movies-slider"}>
           <div className={"container"}>
               <MoviesSlider moviesList={this.state.similarMovies}
-                            name={"Similar movies:"}
+                            name={"Similar movies"}
                             isShow={false}
                             type={"movie"}/>
             </div>
@@ -201,7 +200,7 @@ export default class MoviePage extends React.Component {
         ? <section className={"movies-slider"}>
             <div className={"container"}>
               <MoviesSlider moviesList={this.state.recommendationMovies}
-                            name={"Recommendation movies:"}
+                            name={"Recommendation movies"}
                             isShow={false}
                             type={"movie"}/>
             </div>

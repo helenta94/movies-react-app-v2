@@ -84,13 +84,18 @@ export default class Header extends React.Component {
 							<div className={"movies"}>
 								{this.state.movies.map((item, index) => {
 									if (index < 3) {
-										return <Link to={item.media_type === "movie" ? "/movies/" + item.id : "/tv-shows/" + item.id}
+										return <Link to={item.media_type === "movie" ? "/movies/" + item.id : "/tv-series/" + item.id}
 																 onClick={() => this.resetSearch()}
 																 className={"search-movie-item"}
 																 key={item.id}>
-											<img className={"poster"}
-													 alt={"poster image"}
-													 src={"https://image.tmdb.org/t/p/w200" + item.poster_path} />
+											{item.poster_path !== null
+												? <img className={"poster"}
+															alt={"poster image"}
+															src={"https://image.tmdb.org/t/p/w200" + item.poster_path} />
+												: <div className={"no-poster"}>
+														<i className="far fa-frown" />
+														<span className={"text"}>No poster</span>
+												</div>}
 											<div className={"info"}>
 												<div>
 													<span className={"name"}>{item.title || item.name}</span>
@@ -118,7 +123,9 @@ export default class Header extends React.Component {
 								: null
 							}
 							{this.state.movies.length === 0 && this.state.persons.length === 0
-								? <div className={"not-found-result"}>Nothing found</div>
+								? <div className={"not-found-result"}>
+									<i className="far fa-frown"/>
+									Nothing found</div>
 								: null
 							}
 						</div>

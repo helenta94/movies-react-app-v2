@@ -6,7 +6,8 @@ export default class FilterGenres extends React.Component {
   constructor(props) {
     super(props);
 
-    this.itemsSortBy = [{id: "popularity.asc", name: "Popularity asc"},
+    this.itemsSortBy = [
+      {id: "popularity.asc", name: "Popularity asc"},
       {id: "popularity.desc", name: "Popularity desc"},
       {id: "primary_release_date.asc", name: "Release date asc"},
       {id: "primary_release_date.desc", name: "Release date desc"},
