@@ -1,6 +1,6 @@
 import React from 'react';
 import Dropdown from "./Dropdown";
-import {genresMovie} from "../genresMovie"
+import {genres, genresMovie, genresTv} from "../genresMovie"
 
 export default class FilterGenres extends React.Component {
 
@@ -14,7 +14,7 @@ export default class FilterGenres extends React.Component {
 
 	render() {
 		return <div className={"filter"}>
-			<Dropdown list={genresMovie}
+			<Dropdown list={this.props.type === "tv" ? genresTv : genresMovie}
 								selected={this.props.selected}
 								dropdownName={"Genres"}
                 handlerClick={(id) => this.handlerItemClick(id)}

@@ -6,6 +6,6 @@ export default function NotFoundPage() {
       <div className={"err"}>404</div>
       <i className="far fa-sad-cry"/>
       <span className={"text"}>Not found</span>
-    </div>s
+    </div>
   </div>;
 }

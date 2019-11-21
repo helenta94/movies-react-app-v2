@@ -128,6 +128,8 @@ export default class TvShowPage extends React.Component {
       return <NotFoundPage/>
     }
 
+    console.log(this.state.tvInfo.genres)
+
     return <div className={"page movie-page tv-show-page"}>
       <div className={"movie-page-background"}
            style={{backgroundImage: `url(https://image.tmdb.org/t/p/w1280${this.state.tvInfo.backdrop_path})`}} >
@@ -237,7 +239,7 @@ export default class TvShowPage extends React.Component {
               <MoviesSlider moviesList={this.state.similarTv}
                             name={"Similar TV"}
                             isShow={false}
-                            type={"movie"}/>
+                            type={"tv-series"}/>
             </div>
           </section>
           : null}
@@ -247,7 +249,7 @@ export default class TvShowPage extends React.Component {
               <MoviesSlider moviesList={this.state.recommendationsTv}
                             name={"Recommendation TV"}
                             isShow={false}
-                            type={"movie"}/>
+                            type={"tv-series"}/>
             </div>
           </section>
           : null

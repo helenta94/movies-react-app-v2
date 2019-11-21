@@ -219,7 +219,8 @@ export default class MoviesPage extends React.Component {
 			<div className={"container"}>
 				<div className={"filters"}>
 					<FilterGenres changeHandler={this.handleGenreChanged.bind(this)}
-												selected={this.state.selectedGenres}/>
+												selected={this.state.selectedGenres}
+												type={"movie"}/>
 					<FilterYears changeHandler={this.handleYearsChanged.bind(this)}
 											 selected={this.state.selectedYears}/>
 					<FilterSortBy changeHandler={this.handleSortChanged.bind(this)}

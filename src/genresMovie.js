@@ -291,3 +291,13 @@ export function getGenreNameById(id) {
   const genre = genres.find(item => item.id == id);
   return genre ? genre.name : null;
 }
+
+export function getTvGenreNameById(id) {
+  const genre = genresTv.find(item => item.id == id);
+  return genre ? genre.name : null;
+}
+
+export function getMovieGenreNameById(id) {
+  const genre = genresMovie.find(item => item.id == id);
+  return genre ? genre.name : null;
+}

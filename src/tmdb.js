@@ -38,9 +38,9 @@ export function fetchMovieData(movieId, param) {
 export function fetchTvData(movieId, param, append) {
   param = (param && `/${param}`) || "";
   append = (append && `&append_to_response=${append}`) || "";
-  return fetch(`${HOST}/tv/${movieId}${param}?api_key=${APIKEY + append}&language=en-US`)
+  return fetch(`${HOST}/tv/${movieId}${param}?api_key=${APIKEY + append}&language=en-US&page=1`)
 }
 
 export function fetchTvSeasonData(movieId, seasonNumber) {
-  return fetch(`${HOST}/tv/${APIKEY}/season/${seasonNumber}?api_key=${APIKEY}&language=en-US`)
+  return fetch(`${HOST}/tv/${movieId}/season/${seasonNumber}?api_key=${APIKEY}&language=en-US`)
 }

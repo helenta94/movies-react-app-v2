@@ -9,6 +9,7 @@ export default class MoviesSlider extends React.Component {
     super(props);
     this.state = {
       currentSlide: 1,
+      isShow: false,
     };
 
     this.slickRef = React.createRef();
@@ -21,26 +22,36 @@ export default class MoviesSlider extends React.Component {
   }
 
   handlerClickSliderPrev() {
-    this.slickRef.current.slickPrev();
-    if (this.state.currentSlide > 1) {
-      this.setState({
-        currentSlide: this.state.currentSlide - 1
-      }, () => {
-        console.log(this.state.currentSlide);
-      })
+    if (!this.state.isShow) {
+      this.setState({isShow: true});
+      this.slickRef.current.slickPrev();
+      if (this.state.currentSlide > 1) {
+        this.setState({
+          currentSlide: this.state.currentSlide - 1
+        })
+      }
+      setTimeout(() => {
+        this.setState({isShow: false})
+      }, 1000)
     }
   }
 
   handlerClickSliderNext() {
-    if (this.state.currentSlide < this.maxCountSlides ) {
-      this.setState({
-        currentSlide: this.state.currentSlide + 1
-      }, () => {
+    if (!this.state.isShow) {
+      this.setState({isShow: true});
+      if (this.state.currentSlide < this.maxCountSlides ) {
+        this.setState({
+          currentSlide: this.state.currentSlide + 1
+        }, () => {
+          this.slickRef.current.slickNext();
+          this.getClassNameBtnNext();
+        })
+      } else {
         this.slickRef.current.slickNext();
-        this.getClassNameBtnNext();
-      })
-    } else {
-      this.slickRef.current.slickNext();
+      }
+      setTimeout(() => {
+        this.setState({isShow: false})
+      }, 1000)
     }
   }
 
@@ -86,14 +97,15 @@ export default class MoviesSlider extends React.Component {
     return <div className={"movies-list"}>
       <div className={"movies-list-header"}>
         <div className={"headline"}>{this.props.name}</div>
-        <div className={"bts"}>
-          <button className={this.getClassNameBtnPrev()} onClick={() => this.handlerClickSliderPrev()}>
-            <i className="fas fa-chevron-left"/>
-          </button>
-          <button className={this.getClassNameBtnNext()} onClick={() => this.handlerClickSliderNext()}>
-            <i className="fas fa-chevron-right"/>
-          </button>
-        </div>
+        {this.props.moviesList.length > 6
+          ? <div className={"bts"}>
+            <button className={this.getClassNameBtnPrev()} onClick={() => this.handlerClickSliderPrev()}>
+              <i className="fas fa-chevron-left"/>
+            </button>
+            <button className={this.getClassNameBtnNext()} onClick={() => this.handlerClickSliderNext()}>
+              <i className="fas fa-chevron-right"/>
+            </button>
+          </div> : null}
       </div>
       <div className={"list"}>
         <Slider {...settings} ref={this.slickRef}>
@@ -109,7 +121,7 @@ export default class MoviesSlider extends React.Component {
                 <Link to={this.goToPage()} className={"all-movies"}/>
               </div>
             </div>
-             : null}
+            : null}
         </Slider>
       </div>
     </div>

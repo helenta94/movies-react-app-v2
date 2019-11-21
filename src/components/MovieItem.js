@@ -9,6 +9,7 @@ export default class MovieItem extends React.Component {
   }
 
   render() {
+    console.log(this.props.type)
     return <div className={"movie-item"}>
       <div className={"poster"}>
         {this.props.item.poster_path !== null

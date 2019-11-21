@@ -43,7 +43,7 @@ export default class Dropdown extends React.Component {
     if (this.props.selected.length < 1) {
       return this.props.dropdownName;
     } else if (this.props.selected.length === 1) {
-      return this.props.list.find(el => el.id === this.props.selected[0]).name;
+      return this.props.list.find(el => el.id === this.props.selected[0]).name
     } else {
       return "Selected(" + this.props.selected.length + ")";
     }
